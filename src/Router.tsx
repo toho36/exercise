@@ -2,6 +2,10 @@ import App from '@/App';
 import { ArticleListPage } from '@/pages/ArticleListPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { ArticleDetailPage } from '@/pages/ArticleDetailPage';
+import { LoginPage } from '@/pages/LoginPage';
+import { MyArticlesPage } from '@/pages/MyArticlesPage';
+import { CreateNewArticlePage } from './pages/CreateNewArticlePage';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +20,22 @@ export const router = createBrowserRouter([
       {
         path: '/404',
         element: <NotFoundPage />,
+      },
+      {
+        path: '/article',
+        element: <ArticleDetailPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+      },
+      {
+        path: '/my',
+        element: <MyArticlesPage />,
+      },
+      {
+        path: '/new',
+        element: <CreateNewArticlePage />,
       },
     ],
   },

@@ -27,8 +27,11 @@ export function CreateNewArticlePage() {
         <label htmlFor="content" className="block">
           Content
         </label>
-        <MDEditor value={value} onChange={newValue => setValue(newValue || '')} />
-        <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+        <div data-color-mode="light">
+          <div className="wmde-markdown-var"> </div>
+          <MDEditor value={value} onChange={newValue => setValue(newValue || '')} />
+        </div>
+        {/* <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} /> */}
         {/* Textarea for content */}
       </div>
     </div>

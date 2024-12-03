@@ -1,8 +1,9 @@
 import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
 import React from 'react';
-
+import MDEditor from '@uiw/react-md-editor';
 export function CreateNewArticlePage() {
+  const [value, setValue] = React.useState('**Hello world!!!**');
   return (
     <div className="my-5 w-2/4">
       <div className="flex gap-8">
@@ -26,11 +27,8 @@ export function CreateNewArticlePage() {
         <label htmlFor="content" className="block">
           Content
         </label>
-        <textarea
-          id="content"
-          className="w-full h-40 border rounded"
-          placeholder="Write your content here..."
-        ></textarea>{' '}
+        <MDEditor value={value} onChange={newValue => setValue(newValue || '')} />
+        <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
         {/* Textarea for content */}
       </div>
     </div>

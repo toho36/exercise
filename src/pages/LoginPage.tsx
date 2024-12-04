@@ -14,14 +14,20 @@ export function LoginPage() {
   const setAuthData = useStore(state => state.setAuthData);
 
   // Function to create a tenant and get the API key
-  const createTenant = async (name: string, password: string): Promise<string> => {
+  const createTenant = async (
+    name: string,
+    password: string,
+  ): Promise<{ apiKey: string; tenant: string }> => {
     try {
-      const response = await axios.post<{ apiKey: string }>(`${API_BASE_URL}/tenants`, {
-        name,
-        password,
-      });
+      const response = await axios.post<{ apiKey: string; name: string }>(
+        `${API_BASE_URL}/tenants`,
+        {
+          name,
+          password,
+        },
+      );
       console.log('Tenant created. API Key:', response.data.apiKey);
-      return response.data.apiKey;
+      return { apiKey: response.data.apiKey, tenant: response.data.name };
     } catch (error: any) {
       console.error('Error creating tenant:', error.response?.data || error.message);
       throw error;
@@ -31,8 +37,8 @@ export function LoginPage() {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      // First, create a tenant to get the API key
-      const apiKey = await createTenant(email, password);
+      // First, create a tenant to get the API key and name
+      const { apiKey, tenant } = await createTenant(email, password);
 
       // Then, log in using the API key to get the access token
       const response = await axios.post<{ access_token: string }>(
@@ -52,6 +58,7 @@ export function LoginPage() {
       setAuthData({
         xApiKey: apiKey,
         token: response.data.access_token,
+        tenant, // Pass the tenant's name
       });
       // Handle successful login, e.g., store token, redirect, etc.
       navigate('/my'); // Redirect to /my on successful login

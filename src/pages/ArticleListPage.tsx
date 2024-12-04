@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 interface Article {
-  id: string;
+  articleId: string;
   image: string;
   category: string;
   title: string;
@@ -53,7 +53,7 @@ export function ArticleListPage() {
     const loadArticles = async () => {
       try {
         console.log(authData, 'dataaa');
-        const fetchedArticles = await fetchArticles(authData?.token, authData?.xApiKey);
+        const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
         setArticles(fetchedArticles);
       } catch (error) {
         console.error('Failed to load articles:', error);
@@ -68,7 +68,7 @@ export function ArticleListPage() {
       <div className="flex flex-wrap gap-8">
         {Array.isArray(articles) &&
           articles.map(article => (
-            <Card key={article.id} className="w-full max-w-[48rem] flex-row" placeholder="">
+            <Card key={article.articleId} className="w-full max-w-[48rem] flex-row" placeholder="">
               <CardHeader
                 shadow={false}
                 floated={false}
@@ -78,18 +78,18 @@ export function ArticleListPage() {
                 <img src={article.image} alt="card-image" className="h-full w-full object-cover" />
               </CardHeader>
               <CardBody placeholder="">
-                <Typography variant="h6" color="gray" className="mb-4 uppercase" placeholder="">
+                {/* <Typography variant="h6" color="gray" className="mb-4 uppercase" placeholder="">
                   {article.category}
-                </Typography>
+                </Typography> */}
                 <Typography variant="h4" color="blue-gray" className="mb-2" placeholder="">
                   {article.title}
                 </Typography>
                 <Typography color="gray" className="mb-2 font-normal" placeholder="">
                   By {article.author} on {article.date}
                 </Typography>
-                <Typography color="gray" className="mb-8 font-normal" placeholder="">
+                {/* <Typography color="gray" className="mb-8 font-normal" placeholder="">
                   {article.description}
-                </Typography>
+                </Typography> */}
                 <div className="flex justify-between items-center">
                   <a href="/article" className="inline-block">
                     <Button variant="text" className="flex items-center gap-2" placeholder="">

@@ -3,6 +3,7 @@ import type { StateCreator } from 'zustand';
 type AuthData = {
   xApiKey: string;
   token: string;
+  tenant: string;
 };
 
 type AuthSlice = {

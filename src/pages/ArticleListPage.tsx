@@ -91,7 +91,7 @@ export function ArticleListPage() {
                   {article.description}
                 </Typography> */}
                 <div className="flex justify-between items-center">
-                  <a href="/article" className="inline-block">
+                  <a href={`/article/${article.articleId}`} className="inline-block">
                     <Button variant="text" className="flex items-center gap-2" placeholder="">
                       Learn More
                       <svg

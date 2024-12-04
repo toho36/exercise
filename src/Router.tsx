@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
         element: <NotFoundPage />,
       },
       {
-        path: '/article',
+        path: '/article/:articleId', // Updated path to include articleId as a parameter
         element: <ArticleDetailPage />,
       },
       {

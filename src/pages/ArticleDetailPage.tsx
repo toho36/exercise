@@ -3,13 +3,15 @@ import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export function ArticleDetailPage() {
+  const { articleId } = useParams(); // Extract articleId from URL parameters
+
   const navigate = useNavigate();
 
   return (
     <>
       <div>
         <header className="w-full py-4xl px-8xl ">
-          <h1 className="text-[32px] font-semibold leading-[40px]">Detailed article</h1>
+          <h1 className="text-[32px] font-semibold leading-[40px]">Detailed article {articleId}</h1>
           <p className="text-gray-500">Author: John Doe | Date: January 1, 2023</p>
         </header>
         <div className="flex">

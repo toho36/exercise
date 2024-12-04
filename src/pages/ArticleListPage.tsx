@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
 import axios from 'axios';
+import { useStore } from '@/store/store';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
@@ -81,7 +82,7 @@ async function fetchArticles(
 
 export function ArticleListPage() {
   const [articles, setArticles] = useState<Article[]>([]);
-
+  const setAuthData = useStore(state => state.setAuthData);
   useEffect(() => {
     const tenantName = 'your-new-tenant-name';
     const tenantPassword = 'your-new-tenant-password';
@@ -89,6 +90,10 @@ export function ArticleListPage() {
       try {
         const apiKey = await createTenant(tenantName, tenantPassword);
         const accessToken = await loginTenant(tenantName, tenantPassword, apiKey);
+        setAuthData({
+          xApiKey: apiKey,
+          token: accessToken,
+        });
         const fetchedArticles = await fetchArticles(accessToken, apiKey);
         setArticles(fetchedArticles);
       } catch (error) {

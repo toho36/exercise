@@ -8,11 +8,20 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+type TableRow = {
+  id: number;
+  title: string;
+  perex: string;
+  author: string;
+  comments: number;
+};
 
 const TABLE_HEAD = [
   {
     head: 'Article title',
-    icon: <Checkbox />,
+    icon: <Checkbox crossOrigin={undefined} />,
   },
   {
     head: 'Perex',
@@ -28,7 +37,7 @@ const TABLE_HEAD = [
   },
 ];
 
-const TABLE_ROWS = [
+const TABLE_ROWS: TableRow[] = [
   {
     id: 1,
     title: 'The Rise of Viking Burrito',
@@ -66,21 +75,16 @@ export function MyArticlesPage() {
   const [rows, setRows] = useState(TABLE_ROWS);
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
-  const sortTable = (key: string) => {
+  const sortTable = (key: keyof TableRow) => {
+    // Ensure key is keyof TableRow
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
 
     const sortedRows = [...rows].sort((a, b) => {
-      let aValue = a[key];
-      let bValue = b[key];
-
-      // Check if the key is 'date' or 'issued' to parse as Date objects
-      if (key === 'date' || key === 'issued') {
-        aValue = new Date(aValue);
-        bValue = new Date(bValue);
-      }
+      const aValue = a[key];
+      const bValue = b[key];
 
       if (aValue < bValue) {
         return direction === 'ascending' ? -1 : 1;
@@ -95,9 +99,12 @@ export function MyArticlesPage() {
     setSortConfig({ key, direction });
   };
 
-  const TableCell = ({ children, className }) => (
+  const TableCell: React.FC<{ children: React.ReactNode; className: string }> = ({
+    children,
+    className,
+  }) => (
     <td className={className}>
-      <Typography variant="small" className="font-normal text-gray-600">
+      <Typography variant="small" className="font-normal text-gray-600" placeholder={undefined}>
         {children}
       </Typography>
     </td>
@@ -107,29 +114,33 @@ export function MyArticlesPage() {
     <>
       <div className="flex gap-8 my-5">
         <p className="text-5xl">My Articles</p>
-        <ButtonDefault color="blue" text="Create new article" />
+        <Link to={'/new'}>
+          <ButtonDefault color="blue" text="Create new article" />
+        </Link>
       </div>
-      <Card>
+      <Card placeholder={undefined}>
         <table className="table-auto text-left">
           <thead>
             <tr>
               {TABLE_HEAD.map(({ head, icon }) => (
-                <th
-                  key={head}
-                  className="border-b border-gray-300 p-4 cursor-pointer"
-                  onClick={() =>
-                    sortTable(
-                      head === '# of Comments'
-                        ? 'comments'
-                        : head === 'Article title'
-                          ? 'title'
-                          : head.toLowerCase(),
-                    )
-                  }
-                >
+                <th key={head} className="border-b border-gray-300 p-4 ">
                   <div className="flex items-center gap-1">
                     {icon}
-                    <Typography color="blue-gray" variant="small" className="!font-bold">
+                    <Typography
+                      color="blue-gray"
+                      variant="small"
+                      className={`!font-bold ${head !== 'Actions' ? 'cursor-pointer' : ''}`}
+                      placeholder={undefined}
+                      onClick={() =>
+                        sortTable(
+                          head === '# of Comments'
+                            ? 'comments'
+                            : head === 'Article title'
+                              ? 'title'
+                              : (head.toLowerCase() as keyof TableRow), // Ensure type safety
+                        )
+                      }
+                    >
                       {head} {head !== 'Actions' && <i className="fa-solid fa-sort"></i>}
                     </Typography>
                   </div>
@@ -146,8 +157,13 @@ export function MyArticlesPage() {
                 <tr key={id}>
                   <td className={classes}>
                     <div className="flex items-center gap-1">
-                      <Checkbox />
-                      <Typography variant="small" color="blue-gray" className="font-bold">
+                      <Checkbox crossOrigin={undefined} />
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-bold"
+                        placeholder={undefined}
+                      >
                         {title}
                       </Typography>
                     </div>
@@ -156,9 +172,11 @@ export function MyArticlesPage() {
                   <TableCell className={classes}>{author}</TableCell>
                   <TableCell className={classes}>{comments}</TableCell>
                   <td className={classes}>
-                    <span className="cursor-pointer mr-4">
-                      <i className="fa-solid fa-pen"></i>
-                    </span>
+                    <Link to={'/edit'}>
+                      <span className="cursor-pointer mr-4">
+                        <i className="fa-solid fa-pen"></i>
+                      </span>
+                    </Link>
                     <span className="cursor-pointer">
                       <i className="fa-solid fa-trash"></i>
                     </span>

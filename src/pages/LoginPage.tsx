@@ -1,6 +1,7 @@
 import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export function LoginPage() {
   return (
@@ -21,7 +22,9 @@ export function LoginPage() {
             <InputDefault type="password" placeholder="********" />
           </div>
           <div className="flex justify-end">
-            <ButtonDefault color="blue" text="Log In" />
+            <Link to={'/my'}>
+              <ButtonDefault color="blue" text="Log In" />
+            </Link>
           </div>
         </form>
       </div>

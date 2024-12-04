@@ -1,3 +1,4 @@
+import { ButtonDefault } from '@/components/ui/button';
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
 
 // Dummy data for articles
@@ -49,32 +50,40 @@ export function ArticleListPage() {
         {' '}
         {/* Container for cards */}
         {articles.map(article => (
-          <Card key={article.id} className="w-full max-w-[48rem] flex-row">
+          <Card key={article.id} className="w-full max-w-[48rem] flex-row" placeholder={undefined}>
             <CardHeader
               shadow={false}
               floated={false}
               className="m-0 w-2/5 shrink-0 rounded-r-none"
+              placeholder={undefined}
             >
               <img src={article.image} alt="card-image" className="h-full w-full object-cover" />
             </CardHeader>
-            <CardBody>
-              <Typography variant="h6" color="gray" className="mb-4 uppercase">
+            <CardBody placeholder={undefined}>
+              <Typography
+                variant="h6"
+                color="gray"
+                className="mb-4 uppercase"
+                placeholder={undefined}
+              >
                 {article.category}
               </Typography>
-              <Typography variant="h4" color="blue-gray" className="mb-2">
+              <Typography variant="h4" color="blue-gray" className="mb-2" placeholder={undefined}>
                 {article.title}
               </Typography>
-              <Typography color="gray" className="mb-2 font-normal">
+              <Typography color="gray" className="mb-2 font-normal" placeholder={undefined}>
                 By {article.author} on {article.date} {/* Author and date */}
               </Typography>
-              <Typography color="gray" className="mb-8 font-normal">
+              <Typography color="gray" className="mb-8 font-normal" placeholder={undefined}>
                 {article.description}
               </Typography>
               <div className="flex justify-between items-center">
-                {' '}
-                {/* Flex container for button and comments */}
                 <a href="/article" className="inline-block">
-                  <Button variant="text" className="flex items-center gap-2">
+                  <Button
+                    variant="text"
+                    className="flex items-center gap-2"
+                    placeholder={undefined}
+                  >
                     Learn More
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -92,9 +101,7 @@ export function ArticleListPage() {
                     </svg>
                   </Button>
                 </a>
-                <Typography color="gray" className="ml-4">
-                  {' '}
-                  {/* Number of comments */}
+                <Typography color="gray" className="ml-4" placeholder={undefined}>
                   {article.comments} comments
                 </Typography>
               </div>

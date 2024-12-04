@@ -38,21 +38,33 @@ const relatedArticles = [
 
 export function Sidebar() {
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card
+      className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"
+      placeholder={undefined}
+    >
       <div className="mb-2 p-4">
-        <Typography variant="h5" color="blue-gray">
-          Related articles
-        </Typography>
+        <Typography
+          variant="h5"
+          color="blue-gray"
+          children={'Related articles'}
+          placeholder={undefined}
+        ></Typography>
       </div>
       {relatedArticles.map((article, index) => (
         <div key={index} className="mb-4">
-          <Typography variant="h6" color="blue-gray">
-            {article.title}
-          </Typography>
+          <Typography
+            variant="h6"
+            color="blue-gray"
+            children={article.title}
+            placeholder={undefined}
+          ></Typography>
           {article.text.map((line, lineIndex) => (
-            <Typography key={lineIndex} variant="body2" color="blue-gray">
-              {line}
-            </Typography>
+            <Typography
+              key={lineIndex}
+              color="blue-gray"
+              children={line}
+              placeholder={undefined}
+            ></Typography>
           ))}
         </div>
       ))}

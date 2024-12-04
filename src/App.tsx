@@ -5,9 +5,11 @@ import '@/App.css';
 
 function App() {
   return (
-    <div className="flex flex-col w-3/4 mx-auto gap-y-8">
+    <div>
       <NavbarDefault />
-      <Outlet />
+      <div className="flex flex-col w-3/4 mx-auto gap-y-8">
+        <Outlet />
+      </div>
     </div>
   );
 }

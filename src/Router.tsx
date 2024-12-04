@@ -6,6 +6,7 @@ import { ArticleDetailPage } from '@/pages/ArticleDetailPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { MyArticlesPage } from '@/pages/MyArticlesPage';
 import { CreateNewArticlePage } from './pages/CreateNewArticlePage';
+import { EditArticlePage } from './pages/EditArticlePage';
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: '/new',
         element: <CreateNewArticlePage />,
+      },
+      {
+        path: '/edit',
+        element: <EditArticlePage />,
       },
     ],
   },

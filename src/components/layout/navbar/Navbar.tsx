@@ -5,10 +5,11 @@ import Logo from '@/assets/images/logo.svg';
 import { ButtonDefault } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { AvatarDefault } from '../avatar/Avatar';
-
+import { useStore } from '@/store/store';
 export function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
-
+  const isAuthenticated = useStore(state => !!state.authData);
+  const setAuthData = useStore(state => state.setAuthData);
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
@@ -35,26 +36,41 @@ export function NavbarDefault() {
           </Link>
         </div>
         <div className="flex">
-          <Link to={'/my'}>
-            <Typography
-              className="mr-4 cursor-pointer py-2 font-medium"
-              placeholder="Material Tailwind"
-            >
-              My Articles
-            </Typography>
-          </Link>
-          <Link to={'/new'}>
-            <Typography
-              className="mr-4 cursor-pointer py-2 font-medium text-blue-600"
-              placeholder="Material Tailwind"
-            >
-              Create Articles
-            </Typography>
-          </Link>
-          <AvatarDefault />
-          <Link to={'/login'}>
-            <ButtonDefault variant="text" text="log in" color="blue"></ButtonDefault>
-          </Link>
+          {isAuthenticated && (
+            <>
+              <Link to={'/my'}>
+                <Typography
+                  className="mr-4 cursor-pointer py-2 font-medium"
+                  placeholder="Material Tailwind"
+                >
+                  My Articles
+                </Typography>
+              </Link>
+              <Link to={'/new'}>
+                <Typography
+                  className="mr-4 cursor-pointer py-2 font-medium text-blue-600"
+                  placeholder="Material Tailwind"
+                >
+                  Create Articles
+                </Typography>
+              </Link>
+              <AvatarDefault />
+              <ButtonDefault
+                variant="text"
+                text="log out"
+                color="red"
+                onClick={() => setAuthData(null)}
+              ></ButtonDefault>
+            </>
+          )}
+
+          {!isAuthenticated && (
+            <>
+              <Link to={'/login'}>
+                <ButtonDefault variant="text" text="log in" color="blue"></ButtonDefault>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

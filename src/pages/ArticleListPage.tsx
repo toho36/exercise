@@ -3,6 +3,7 @@ import { ButtonDefault } from '@/components/ui/button';
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
 import axios from 'axios';
 import { useStore } from '@/store/store';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
@@ -17,43 +18,6 @@ interface Article {
   comments: number;
 }
 
-async function createTenant(name: string, password: string): Promise<string> {
-  try {
-    const response = await axios.post<{ apiKey: string }>(`${API_BASE_URL}/tenants`, {
-      name,
-      password,
-    });
-
-    console.log('Tenant created. API Key:', response.data.apiKey);
-    return response.data.apiKey;
-  } catch (error: any) {
-    console.error('Error creating tenant:', error.response?.data || error.message);
-    throw error;
-  }
-}
-
-async function loginTenant(username: string, password: string, apiKey: string): Promise<string> {
-  try {
-    const response = await axios.post<{ access_token: string }>(
-      `${API_BASE_URL}/login`,
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          'X-API-KEY': apiKey,
-        },
-      },
-    );
-
-    console.log('Login successful. Access Token:', response.data.access_token);
-    return response.data.access_token;
-  } catch (error: any) {
-    console.error('Error logging in:', error.response?.data || error.message);
-    throw error;
-  }
-}
 async function fetchArticles(
   accessToken: string,
   apiKey: string,
@@ -82,27 +46,22 @@ async function fetchArticles(
 
 export function ArticleListPage() {
   const [articles, setArticles] = useState<Article[]>([]);
-  const setAuthData = useStore(state => state.setAuthData);
+  const authData = useStore(state => state.authData); // Retrieve auth data from the store
+  const navigate = useNavigate();
   useEffect(() => {
-    const tenantName = 'your-new-tenant-name';
-    const tenantPassword = 'your-new-tenant-password';
-    async function initialize() {
+    if (!authData) navigate('/login');
+    const loadArticles = async () => {
       try {
-        const apiKey = await createTenant(tenantName, tenantPassword);
-        const accessToken = await loginTenant(tenantName, tenantPassword, apiKey);
-        setAuthData({
-          xApiKey: apiKey,
-          token: accessToken,
-        });
-        const fetchedArticles = await fetchArticles(accessToken, apiKey);
+        console.log(authData, 'dataaa');
+        const fetchedArticles = await fetchArticles(authData?.token, authData?.xApiKey);
         setArticles(fetchedArticles);
       } catch (error) {
-        console.error('Initialization error:', error);
+        console.error('Failed to load articles:', error);
       }
-    }
-    initialize();
-  }, []);
+    };
 
+    if (authData) loadArticles();
+  }, [authData]);
   return (
     <div>
       <h1 className="text-2xl font-bold my-8">Recent Articles</h1>

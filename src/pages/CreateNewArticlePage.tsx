@@ -13,58 +13,65 @@ export function CreateNewArticlePage() {
   const [value, setValue] = useState('**Hello world!!!**');
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const authData = useStore(state => state.authData); // Retrieve auth data from the store
+  const authData = useStore(state => state.authData);
 
   const handleImageUpload = async (imageFile: File): Promise<string | null> => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/images`, imageFile, {
+      const formData = new FormData();
+      formData.append('image', imageFile); // Append the file with the key 'image'
+
+      const response = await axios.post(`${API_BASE_URL}/images`, formData, {
         headers: {
-          'Authorization': `Bearer ${authData?.token || ''}`, // Ensure token is correct
-          'X-API-KEY': authData?.xApiKey || '', // Ensure xApiKey is correct
-          'Content-Type': imageFile.type, // Set the content type to the file's MIME type
+          'Authorization': `Bearer ${authData?.token || ''}`,
+          'X-API-KEY': authData?.xApiKey || '',
+          'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
         },
       });
-
-      return response.data.imageId;
+      console.log(response, 'image');
+      return response.data[0].imageId;
     } catch (error: any) {
       console.error('Error uploading image:', error.response?.data || error.message);
       return null;
     }
   };
-
   const handlePublish = async () => {
-    if (!image) {
-      console.error('No image selected');
+    if (!title || !value || !image) {
+      alert('Please fill in all fields and upload an image.');
       return;
     }
+    setIsLoading(true);
     const imageId = await handleImageUpload(image);
     if (!imageId) {
-      console.error('Failed to upload image');
+      alert('Failed to upload image. Please try again.');
+      setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${API_BASE_URL}/articles`,
         {
-          title: title,
+          title,
           perex: value,
-          imageId: imageId,
+          imageId,
         },
         {
           headers: {
-            'Authorization': `Bearer ${authData?.token || ''}`, // Ensure token is correct
-            'X-API-KEY': authData?.xApiKey || '', // Ensure xApiKey is correct
+            'Authorization': `Bearer ${authData?.token || ''}`,
+            'X-API-KEY': authData?.xApiKey || '',
             'Content-Type': 'application/json',
           },
         },
       );
-      console.log('Article published with image:', response.data);
       navigate('/my');
     } catch (error: any) {
-      console.error('Error publishing article with image:', error.response?.data || error.message);
+      console.error('Error publishing article:', error.response?.data || error.message);
+      alert('Failed to publish article. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,11 +88,17 @@ export function CreateNewArticlePage() {
       setImagePreview(null);
     }
   };
+
   return (
     <div className="my-5 w-2/4">
       <div className="flex gap-8">
         <p className="text-2xl">Create New Article</p>
-        <ButtonDefault color="blue" text="Publish Article" onClick={handlePublish} />
+        <ButtonDefault
+          color="blue"
+          text={isLoading ? 'Publishing...' : 'Publish Article'}
+          onClick={handlePublish}
+          disabled={isLoading}
+        />
       </div>
 
       <div className="my-3">

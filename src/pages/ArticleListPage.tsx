@@ -9,13 +9,23 @@ const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 interface Article {
   articleId: string;
-  image: string;
+  imageId: string; // Update to store imageId instead of image URL
   category: string;
   title: string;
   author: string;
-  date: string;
-  description: string;
+  createdAt: string; // Update to createdAt
+  perex: string; // Update to perex
   comments: number;
+}
+
+function formatDate(isoDate: string): string {
+  const date = new Date(isoDate);
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit',
+  });
+  return formatter.format(date); // Format as MM/DD/YY
 }
 
 async function fetchArticles(
@@ -43,25 +53,67 @@ async function fetchArticles(
     throw error;
   }
 }
+async function fetchImage(imageId: string, accessToken: string, apiKey: string): Promise<string> {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/images/${imageId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'X-API-KEY': apiKey,
+      },
+      responseType: 'blob', // Ensure the response is a blob
+    });
+    return URL.createObjectURL(response.data); // Convert blob to object URL
+  } catch (error: any) {
+    console.error('Error fetching image:', error.response?.data || error.message);
+    throw error;
+  }
+}
 
 export function ArticleListPage() {
   const [articles, setArticles] = useState<Article[]>([]);
-  const authData = useStore(state => state.authData); // Retrieve auth data from the store
+  const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
+  const authData = useStore(state => state.authData);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!authData) navigate('/login');
     const loadArticles = async () => {
       try {
-        console.log(authData, 'dataaa');
         const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
         setArticles(fetchedArticles);
+
+        // Fetch images for each article
+        const imagePromises = fetchedArticles.map(async article => {
+          const imageUrl = await fetchImage(
+            article.imageId,
+            authData?.token || '',
+            authData?.xApiKey || '',
+          );
+          return { articleId: article.articleId, imageUrl };
+        });
+
+        const images = await Promise.all(imagePromises);
+        const imageMap = images.reduce(
+          (acc, { articleId, imageUrl }) => {
+            acc[articleId] = imageUrl;
+            return acc;
+          },
+          {} as { [key: string]: string },
+        );
+        const articlesWithAuthor = fetchedArticles.map(article => ({
+          ...article,
+          author: authData?.tenant || article.author, // Use tenant as author
+        }));
+        setArticles(articlesWithAuthor);
+        setImageUrls(imageMap);
       } catch (error) {
-        console.error('Failed to load articles:', error);
+        console.error('Failed to load articles or images:', error);
       }
     };
 
     if (authData) loadArticles();
   }, [authData]);
+  console.log(articles);
   return (
     <div>
       <h1 className="text-2xl font-bold my-8">Recent Articles</h1>
@@ -75,21 +127,22 @@ export function ArticleListPage() {
                 className="m-0 w-2/5 shrink-0 rounded-r-none"
                 placeholder=""
               >
-                <img src={article.image} alt="card-image" className="h-full w-full object-cover" />
+                <img
+                  src={imageUrls[article.articleId] || ''}
+                  alt="card-image"
+                  className="h-full w-full object-cover"
+                />
               </CardHeader>
               <CardBody placeholder="">
-                {/* <Typography variant="h6" color="gray" className="mb-4 uppercase" placeholder="">
-                  {article.category}
-                </Typography> */}
                 <Typography variant="h4" color="blue-gray" className="mb-2" placeholder="">
                   {article.title}
                 </Typography>
                 <Typography color="gray" className="mb-2 font-normal" placeholder="">
-                  By {article.author} on {article.date}
+                  {article.author} • {formatDate(article.createdAt)}
                 </Typography>
-                {/* <Typography color="gray" className="mb-8 font-normal" placeholder="">
-                  {article.description}
-                </Typography> */}
+                <Typography color="gray" className="mb-8 font-normal" placeholder="">
+                  {article.perex}
+                </Typography>
                 <div className="flex justify-between items-center">
                   <a href={`/article/${article.articleId}`} className="inline-block">
                     <Button variant="text" className="flex items-center gap-2" placeholder="">

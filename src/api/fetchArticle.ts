@@ -6,13 +6,16 @@ export interface IArticle {
   imageId: string;
   category: string;
   title: string;
-  author: string;
-  createdAt: string;
   perex: string;
-  comments: number;
+  content: string | null;
+  createdAt: string;
+  lastUpdatedAt: string;
+  comments: any[];
+  imgBlob: string; // Add this optional property
+}
+interface IArticleWithImage extends IArticle {
   imgBlob: string;
 }
-
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 /**
@@ -26,35 +29,26 @@ export async function fetchArticle(
   accessToken: string,
   apiKey: string,
   articleId: string,
-): Promise<IArticle> {
-  console.log(accessToken, 'token');
-  console.log(apiKey, 'key');
-  console.log(articleId, ' iddd');
+): Promise<IArticleWithImage> {
   try {
-    const response = await axios.get<{
-      [x: string]: any;
-      item: IArticle;
-    }>(`${API_BASE_URL}/articles/${articleId}`, {
+    const response = await axios.get(`${API_BASE_URL}/articles/${articleId}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'X-API-KEY': apiKey,
+        'x-api-key': apiKey,
       },
     });
 
-    const article = response.data;
-
-    // Fetches image for the article by calling fetchImage function and adds the image URL to the article object as imgBlob property.
-    console.log(article.imageId, 'img id');
-
+    const article: IArticle = response.data;
     const imageBlob = await fetchImage(article.imageId, accessToken, apiKey);
-    const fullArticle: IArticle = {
-      ...article.item,
+
+    const fullArticle: IArticleWithImage = {
+      ...article,
       imgBlob: imageBlob,
     };
 
     return fullArticle;
-  } catch (error: any) {
-    console.error('Error fetching article:', error.response?.data || error.message);
+  } catch (error) {
+    console.error('Error fetching the article or image:', error);
     throw error;
   }
 }

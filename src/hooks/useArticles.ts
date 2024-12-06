@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store/store';
-import { IArticle, fetchArticles } from '@/api/fetchArticles';
+import { fetchArticles } from '@/api/fetchArticles';
 
 export function useArticles() {
-  const [articles, setArticles] = useState<IArticle[]>([]);
+  const articles = useStore(state => state.articles);
+  const setArticles = useStore(state => state.setArticles);
   const authData = useStore(state => state.authData);
 
   useEffect(() => {

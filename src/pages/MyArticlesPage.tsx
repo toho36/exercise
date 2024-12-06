@@ -41,7 +41,7 @@ export function MyArticlesPage() {
       direction = 'descending';
     }
 
-    const sortedRows = [...articles].sort((a, b) => {
+    const sortedRows = [...(articles || [])].sort((a, b) => {
       const aValue = a[key];
       const bValue = b[key];
 
@@ -107,7 +107,7 @@ export function MyArticlesPage() {
             </tr>
           </thead>
           <tbody>
-            {articles.map(({ articleId, title, perex, author, comments }, index) => {
+            {articles?.map(({ articleId, title, perex, author, comments }, index) => {
               const isLast = index === articles.length - 1;
               const classes = isLast ? 'p-4' : 'p-4 border-b border-gray-300';
 

@@ -10,7 +10,7 @@ export function Sidebar() {
       <div className="mb-2 p-4">
         <Typography variant="h5" color="blue-gray" children={'Related articles'}></Typography>
       </div>
-      {articles.map((article, index) => (
+      {articles?.map((article, index) => (
         <Link to={`/article/${article.articleId}`} key={index}>
           <div className="mb-4">
             <Typography variant="h6" color="blue-gray" children={article.title}></Typography>

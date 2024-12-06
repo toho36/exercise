@@ -1,25 +1,25 @@
 import type { StateCreator } from 'zustand';
 
-type AuthData = {
+interface IAuthData {
   xApiKey: string;
   token: string;
   tenant: string;
-};
+}
 
-type AuthSlice = {
+interface IAuthSlice {
   isAuthenticated: boolean;
-  authData: AuthData | null;
+  authData: IAuthData | null;
   setAuthenticated: (value: boolean) => void;
-  setAuthData: (data: AuthData | null) => void; // New function type
-};
+  setAuthData: (data: IAuthData | null) => void; // New function type
+}
 
-export const createAuthSlice: StateCreator<AuthSlice, [['zustand/devtools', never]]> = set => ({
+export const createAuthSlice: StateCreator<IAuthSlice, [['zustand/devtools', never]]> = set => ({
   isAuthenticated: false,
   authData: null,
   setAuthenticated: (bool: boolean) => {
     set({ isAuthenticated: bool }, undefined, 'action/setAuthenticated');
   },
-  setAuthData: (data: AuthData | null) => {
+  setAuthData: (data: IAuthData | null) => {
     // New function implementation
     set({ authData: data }, undefined, 'action/setAuthData');
   },

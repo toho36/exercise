@@ -1,17 +1,6 @@
 import axios from 'axios';
 import { fetchImage } from '@/api/fetchImage';
-
-export interface IArticle {
-  articleId: string;
-  imageId: string;
-  category: string;
-  title: string;
-  author: string;
-  createdAt: string;
-  perex: string;
-  comments: number;
-  imgBlob: string;
-}
+import { IArticle } from '@/store/slices/articlesSlice';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 

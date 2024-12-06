@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { CommentSection } from '@/components/layout/commentSection/CommentSection';
 import { useArticles } from '@/hooks/useArticles';
-import { formatDate } from '@/utils/utils';
+import { formatDate } from '@/utils/formatDate';
 import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
 
 export function ArticleDetailPage() {

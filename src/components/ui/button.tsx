@@ -1,7 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import { color } from '@material-tailwind/react/types/components/alert';
 
-interface ButtonDefaultProps {
+interface IButtonDefaultProps {
   color?: color;
   text: string;
   variant?: 'filled' | 'outlined' | 'text';
@@ -19,7 +19,7 @@ export function ButtonDefault({
   type = 'button',
   onClick,
   disabled = false,
-}: ButtonDefaultProps) {
+}: IButtonDefaultProps) {
   return (
     <Button
       variant={variant}

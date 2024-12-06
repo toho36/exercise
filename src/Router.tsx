@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
         element: <CreateNewArticlePage />,
       },
       {
-        path: '/edit',
+        path: '/edit/:articleId',
         element: <EditArticlePage />,
       },
     ],

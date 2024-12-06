@@ -1,18 +1,13 @@
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
-import { Article, useArticles } from '@/hooks/useArticles';
-import { formatDate } from '@/utils/utils';
+import { formatDate } from '@/utils/formatDate';
 import { Link } from 'react-router-dom';
+import { IArticle } from '@/api/fetchArticles';
 
-export function ArticleListPage(article: Article) {
+export function Article(article: IArticle) {
   return (
     <Card key={article.articleId} className="w-full max-w-[48rem] flex-row">
       <CardHeader shadow={false} floated={false} className="m-0 w-2/5 shrink-0 rounded-r-none">
-        e
-        {/* <img
-                  src={imageUrls[article.articleId] || ''}
-                  alt="card-image"
-                  className="h-full w-full object-cover"
-                /> */}
+        <img src={article.imgBlob} alt="card-image" className="h-full w-full object-cover" />
       </CardHeader>
       <CardBody>
         <Typography variant="h4" color="blue-gray" className="mb-2">

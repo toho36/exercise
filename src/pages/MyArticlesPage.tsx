@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
-import {
-  Card,
-  Input,
-  Checkbox,
-  CardHeader,
-  IconButton,
-  Typography,
-} from '@material-tailwind/react';
+import { Card, Checkbox, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useStore } from '@/store/store';
+import { useArticles } from '@/hooks/useArticles';
 
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
-
-type TableRow = {
+interface ITableRow {
   articleId: string;
   title: string;
   perex: string;
   author: string;
   comments: number;
-};
+}
 
 const TABLE_HEAD = [
   {
@@ -41,55 +31,17 @@ const TABLE_HEAD = [
   },
 ];
 
-// Fetch articles function
-async function fetchArticles(accessToken: string, apiKey: string): Promise<TableRow[]> {
-  try {
-    const response = await axios.get<{ items: TableRow[] }>(`${API_BASE_URL}/articles`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'X-API-KEY': apiKey,
-      },
-    });
-
-    if (!Array.isArray(response.data.items)) {
-      throw new Error('API response does not contain an array of articles');
-    }
-    return response.data.items;
-  } catch (error: any) {
-    console.error('Error fetching articles:', error.response?.data || error.message);
-    throw error;
-  }
-}
-
 export function MyArticlesPage() {
-  const [rows, setRows] = useState<TableRow[]>([]);
+  const { articles, setArticles } = useArticles();
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
-  const authData = useStore(state => state.authData);
-  useEffect(() => {
-    const loadArticles = async () => {
-      try {
-        const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
-        // Ensure each article has the correct author from authData
-        const articlesWithAuthor = fetchedArticles.map(article => ({
-          ...article,
-          author: authData?.tenant || article.author, // Use tenant as author
-        }));
-        setRows(articlesWithAuthor);
-      } catch (error) {
-        console.error('Failed to load articles:', error);
-      }
-    };
 
-    if (authData) loadArticles();
-  }, [authData]);
-
-  const sortTable = (key: keyof TableRow) => {
+  const sortTable = (key: keyof ITableRow) => {
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
 
-    const sortedRows = [...rows].sort((a, b) => {
+    const sortedRows = [...articles].sort((a, b) => {
       const aValue = a[key];
       const bValue = b[key];
 
@@ -102,7 +54,7 @@ export function MyArticlesPage() {
       return 0;
     });
 
-    setRows(sortedRows);
+    setArticles(sortedRows);
     setSortConfig({ key, direction });
   };
 
@@ -143,7 +95,7 @@ export function MyArticlesPage() {
                             ? 'comments'
                             : head === 'Article title'
                               ? 'title'
-                              : (head.toLowerCase() as keyof TableRow),
+                              : (head.toLowerCase() as keyof ITableRow),
                         )
                       }
                     >
@@ -155,8 +107,8 @@ export function MyArticlesPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ articleId, title, perex, author, comments }, index) => {
-              const isLast = index === rows.length - 1;
+            {articles.map(({ articleId, title, perex, author, comments }, index) => {
+              const isLast = index === articles.length - 1;
               const classes = isLast ? 'p-4' : 'p-4 border-b border-gray-300';
 
               return (
@@ -173,7 +125,7 @@ export function MyArticlesPage() {
                   <TableCell className={classes}>{author}</TableCell>
                   <TableCell className={classes}>{comments}</TableCell>
                   <td className={classes}>
-                    <Link to={'/edit'}>
+                    <Link to={`/edit/${articleId}`}>
                       <span className="cursor-pointer mr-4">
                         <i className="fa-solid fa-pen"></i>
                       </span>

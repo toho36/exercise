@@ -1,12 +1,12 @@
 import { Input } from '@material-tailwind/react';
 
-type InputDefaultType = {
+interface IInputDefaultType {
   placeholder: string;
   type: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-export function InputDefault({ placeholder, type, value, onChange }: InputDefaultType) {
+}
+export function InputDefault({ placeholder, type, value, onChange }: IInputDefaultType) {
   return (
     <div className="w-full">
       <Input

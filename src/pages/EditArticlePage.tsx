@@ -3,9 +3,18 @@ import { InputDefault } from '@/components/ui/input';
 import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import Logo from '@/assets/images/logo.svg';
+import { useArticles } from '@/hooks/useArticles';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
 
 export function EditArticlePage() {
   const [value, setValue] = React.useState('**Hello world!!!**');
+  const { articleId } = useParams();
+  const { article } = useArticles(articleId); // Use the hook to fetch the article
+  console.log(article, 'articlee');
+  if (!article) {
+    return <DefaultSkeleton />;
+  }
   return (
     <div className="my-5 w-2/4">
       <div className="flex gap-8">
@@ -23,8 +32,8 @@ export function EditArticlePage() {
         <label htmlFor="featuredImage" className="block">
           Featured Image
         </label>
-        <img src={Logo} />
-        {/* <ButtonDefault color="blue-gray" text="Upload an Image" /> Button for image upload */}
+        <img src={article.imgBlob} alt="Article Image" className="w-full h-auto mb-4" />
+
         <ButtonDefault variant="text" text="Upload New" color="blue"></ButtonDefault>
         <ButtonDefault variant="text" text="Delete" color="red"></ButtonDefault>
       </div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { fetchImage } from '@/api/fetchImage';
-import { IArticle } from '@/store/slices/articlesSlice';
+import { IArticles } from '@/store/slices/articlesSlice';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
@@ -11,9 +11,9 @@ const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
  * @returns {Promise<Article[]>} A promise that resolves to an array of articles with images.
  * @throws {Error} If there is an error fetching the articles.
  */
-export async function fetchArticles(accessToken: string, apiKey: string): Promise<IArticle[]> {
+export async function fetchArticles(accessToken: string, apiKey: string): Promise<IArticles[]> {
   try {
-    const response = await axios.get<{ items: IArticle[] }>(`${API_BASE_URL}/articles`, {
+    const response = await axios.get<{ items: IArticles[] }>(`${API_BASE_URL}/articles`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'X-API-KEY': apiKey,

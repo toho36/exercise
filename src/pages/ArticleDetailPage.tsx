@@ -9,7 +9,7 @@ export function ArticleDetailPage() {
   const { articleId } = useParams();
   const { articles } = useArticles();
 
-  const article = articles.find(article => article.articleId === articleId);
+  const article = articles?.find(article => article.articleId === articleId);
 
   if (!article) {
     return <DefaultSkeleton />;

@@ -8,7 +8,7 @@ export function ArticleListPage() {
     <div>
       <h1 className="text-2xl font-bold my-8">Recent Articles</h1>
       <div className="flex flex-wrap gap-8">
-        {articles.length === 0 && <DefaultSkeleton />}
+        {articles?.length === 0 && <DefaultSkeleton />}
         {!articles && <p>no data to display</p>}
         {articles &&
           articles.length > 0 &&

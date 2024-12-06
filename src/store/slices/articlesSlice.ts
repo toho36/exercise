@@ -1,6 +1,6 @@
 import type { StateCreator } from 'zustand';
 
-export interface IArticle {
+export interface IArticles {
   articleId: string;
   imageId: string;
   category: string;
@@ -13,8 +13,8 @@ export interface IArticle {
 }
 
 interface IArticlesSlice {
-  articles: IArticle[] | undefined;
-  setArticles: (articles: IArticle[]) => void;
+  articles: IArticles[] | undefined;
+  setArticles: (articles: IArticles[]) => void;
 }
 
 export const createArticleSlice: StateCreator<
@@ -22,7 +22,7 @@ export const createArticleSlice: StateCreator<
   [['zustand/devtools', never]]
 > = set => ({
   articles: undefined,
-  setArticles: (articles: IArticle[]) => {
+  setArticles: (articles: IArticles[]) => {
     set({ articles: articles }, undefined, 'action/setArticles');
   },
 });

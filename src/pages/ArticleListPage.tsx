@@ -2,57 +2,32 @@ import { useEffect, useState } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
 import axios from 'axios';
+import { useStore } from '@/store/store';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 interface Article {
-  id: string;
-  image: string;
+  articleId: string;
+  imageId: string; // Update to store imageId instead of image URL
   category: string;
   title: string;
   author: string;
-  date: string;
-  description: string;
+  createdAt: string; // Update to createdAt
+  perex: string; // Update to perex
   comments: number;
 }
 
-async function createTenant(name: string, password: string): Promise<string> {
-  try {
-    const response = await axios.post<{ apiKey: string }>(`${API_BASE_URL}/tenants`, {
-      name,
-      password,
-    });
-
-    console.log('Tenant created. API Key:', response.data.apiKey);
-    return response.data.apiKey;
-  } catch (error: any) {
-    console.error('Error creating tenant:', error.response?.data || error.message);
-    throw error;
-  }
+function formatDate(isoDate: string): string {
+  const date = new Date(isoDate);
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit',
+  });
+  return formatter.format(date); // Format as MM/DD/YY
 }
 
-async function loginTenant(username: string, password: string, apiKey: string): Promise<string> {
-  try {
-    const response = await axios.post<{ access_token: string }>(
-      `${API_BASE_URL}/login`,
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          'X-API-KEY': apiKey,
-        },
-      },
-    );
-
-    console.log('Login successful. Access Token:', response.data.access_token);
-    return response.data.access_token;
-  } catch (error: any) {
-    console.error('Error logging in:', error.response?.data || error.message);
-    throw error;
-  }
-}
 async function fetchArticles(
   accessToken: string,
   apiKey: string,
@@ -78,56 +53,98 @@ async function fetchArticles(
     throw error;
   }
 }
+async function fetchImage(imageId: string, accessToken: string, apiKey: string): Promise<string> {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/images/${imageId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'X-API-KEY': apiKey,
+      },
+      responseType: 'blob', // Ensure the response is a blob
+    });
+    return URL.createObjectURL(response.data); // Convert blob to object URL
+  } catch (error: any) {
+    console.error('Error fetching image:', error.response?.data || error.message);
+    throw error;
+  }
+}
 
 export function ArticleListPage() {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
+  const authData = useStore(state => state.authData);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const tenantName = 'your-new-tenant-name';
-    const tenantPassword = 'your-new-tenant-password';
-    async function initialize() {
+    if (!authData) navigate('/login');
+    const loadArticles = async () => {
       try {
-        const apiKey = await createTenant(tenantName, tenantPassword);
-        const accessToken = await loginTenant(tenantName, tenantPassword, apiKey);
-        const fetchedArticles = await fetchArticles(accessToken, apiKey);
+        const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
         setArticles(fetchedArticles);
-      } catch (error) {
-        console.error('Initialization error:', error);
-      }
-    }
-    initialize();
-  }, []);
 
+        // Fetch images for each article
+        const imagePromises = fetchedArticles.map(async article => {
+          const imageUrl = await fetchImage(
+            article.imageId,
+            authData?.token || '',
+            authData?.xApiKey || '',
+          );
+          return { articleId: article.articleId, imageUrl };
+        });
+
+        const images = await Promise.all(imagePromises);
+        const imageMap = images.reduce(
+          (acc, { articleId, imageUrl }) => {
+            acc[articleId] = imageUrl;
+            return acc;
+          },
+          {} as { [key: string]: string },
+        );
+        const articlesWithAuthor = fetchedArticles.map(article => ({
+          ...article,
+          author: authData?.tenant || article.author, // Use tenant as author
+        }));
+        setArticles(articlesWithAuthor);
+        setImageUrls(imageMap);
+      } catch (error) {
+        console.error('Failed to load articles or images:', error);
+      }
+    };
+
+    if (authData) loadArticles();
+  }, [authData]);
+  console.log(articles);
   return (
     <div>
       <h1 className="text-2xl font-bold my-8">Recent Articles</h1>
       <div className="flex flex-wrap gap-8">
         {Array.isArray(articles) &&
           articles.map(article => (
-            <Card key={article.id} className="w-full max-w-[48rem] flex-row" placeholder="">
+            <Card key={article.articleId} className="w-full max-w-[48rem] flex-row" placeholder="">
               <CardHeader
                 shadow={false}
                 floated={false}
                 className="m-0 w-2/5 shrink-0 rounded-r-none"
                 placeholder=""
               >
-                <img src={article.image} alt="card-image" className="h-full w-full object-cover" />
+                <img
+                  src={imageUrls[article.articleId] || ''}
+                  alt="card-image"
+                  className="h-full w-full object-cover"
+                />
               </CardHeader>
               <CardBody placeholder="">
-                <Typography variant="h6" color="gray" className="mb-4 uppercase" placeholder="">
-                  {article.category}
-                </Typography>
                 <Typography variant="h4" color="blue-gray" className="mb-2" placeholder="">
                   {article.title}
                 </Typography>
                 <Typography color="gray" className="mb-2 font-normal" placeholder="">
-                  By {article.author} on {article.date}
+                  {article.author} • {formatDate(article.createdAt)}
                 </Typography>
                 <Typography color="gray" className="mb-8 font-normal" placeholder="">
-                  {article.description}
+                  {article.perex}
                 </Typography>
                 <div className="flex justify-between items-center">
-                  <a href="/article" className="inline-block">
+                  <a href={`/article/${article.articleId}`} className="inline-block">
                     <Button variant="text" className="flex items-center gap-2" placeholder="">
                       Learn More
                       <svg

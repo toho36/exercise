@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
 import {
   Card,
@@ -7,11 +8,14 @@ import {
   IconButton,
   Typography,
 } from '@material-tailwind/react';
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useStore } from '@/store/store';
+
+const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 type TableRow = {
-  id: number;
+  articleId: string;
   title: string;
   perex: string;
   author: string;
@@ -30,53 +34,56 @@ const TABLE_HEAD = [
     head: 'Author',
   },
   {
-    head: '# of Comments', // Updated header to reflect the change
+    head: '# of Comments',
   },
   {
     head: 'Actions',
   },
 ];
 
-const TABLE_ROWS: TableRow[] = [
-  {
-    id: 1,
-    title: 'The Rise of Viking Burrito',
-    perex: 'Exploring the unique flavors of Viking Burrito.',
-    author: 'John Doe',
-    comments: 12, // Number of comments
-  },
-  {
-    id: 2,
+// Fetch articles function
+async function fetchArticles(accessToken: string, apiKey: string): Promise<TableRow[]> {
+  try {
+    const response = await axios.get<{ items: TableRow[] }>(`${API_BASE_URL}/articles`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'X-API-KEY': apiKey,
+      },
+    });
 
-    title: 'Stone Tech Zone Innovations',
-    perex: 'A deep dive into the latest tech from Stone Tech Zone.',
-    author: 'Jane Smith',
-    comments: 8, // Number of comments
-  },
-  {
-    id: 3,
-
-    title: 'Fiber Notion: The Future of Connectivity',
-    perex: 'How Fiber Notion is changing the internet landscape.',
-    author: 'Alice Johnson',
-    comments: 15, // Number of comments
-  },
-  {
-    id: 4,
-
-    title: 'Blue Bird: A New Era in Aviation',
-    perex: 'Blue Bird’s latest advancements in aviation technology.',
-    author: 'Bob Brown',
-    comments: 5, // Number of comments
-  },
-];
+    if (!Array.isArray(response.data.items)) {
+      throw new Error('API response does not contain an array of articles');
+    }
+    return response.data.items;
+  } catch (error: any) {
+    console.error('Error fetching articles:', error.response?.data || error.message);
+    throw error;
+  }
+}
 
 export function MyArticlesPage() {
-  const [rows, setRows] = useState(TABLE_ROWS);
+  const [rows, setRows] = useState<TableRow[]>([]);
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
+  const authData = useStore(state => state.authData);
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
+        // Ensure each article has the correct author from authData
+        const articlesWithAuthor = fetchedArticles.map(article => ({
+          ...article,
+          author: authData?.tenant || article.author, // Use tenant as author
+        }));
+        setRows(articlesWithAuthor);
+      } catch (error) {
+        console.error('Failed to load articles:', error);
+      }
+    };
+
+    if (authData) loadArticles();
+  }, [authData]);
 
   const sortTable = (key: keyof TableRow) => {
-    // Ensure key is keyof TableRow
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
@@ -105,7 +112,7 @@ export function MyArticlesPage() {
   }) => (
     <td className={className}>
       <Typography variant="small" className="font-normal text-gray-600" placeholder={undefined}>
-        {children}
+        {children || 'N/A'}
       </Typography>
     </td>
   );
@@ -137,7 +144,7 @@ export function MyArticlesPage() {
                             ? 'comments'
                             : head === 'Article title'
                               ? 'title'
-                              : (head.toLowerCase() as keyof TableRow), // Ensure type safety
+                              : (head.toLowerCase() as keyof TableRow),
                         )
                       }
                     >
@@ -149,12 +156,12 @@ export function MyArticlesPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ id, title, perex, author, comments }, index) => {
+            {rows.map(({ articleId, title, perex, author, comments }, index) => {
               const isLast = index === rows.length - 1;
               const classes = isLast ? 'p-4' : 'p-4 border-b border-gray-300';
 
               return (
-                <tr key={id}>
+                <tr key={articleId}>
                   <td className={classes}>
                     <div className="flex items-center gap-1">
                       <Checkbox crossOrigin={undefined} />

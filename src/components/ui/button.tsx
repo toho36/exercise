@@ -1,21 +1,36 @@
 import { Button } from '@material-tailwind/react';
+import { color } from '@material-tailwind/react/types/components/alert';
 
 interface ButtonDefaultProps {
-  color?: string;
+  color?: color;
   text: string;
-  variant?: string;
-  image?: string; // New prop for image source
+  variant?: 'filled' | 'outlined' | 'text';
+  image?: string;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
+  disabled?: boolean;
 }
 
-// Modify the ButtonDefault component to render images
-export function ButtonDefault({ color, text, variant, image }: ButtonDefaultProps) {
+export function ButtonDefault({
+  color = 'blue',
+  text,
+  variant = 'filled',
+  image,
+  type = 'button',
+  onClick,
+  disabled = false,
+}: ButtonDefaultProps) {
   return (
     <Button
       placeholder=""
-      variant={variant as 'filled' | 'outlined' | 'text'}
-      color={color as 'blue' | 'red' | 'gray' | 'green' | 'amber' | 'purple'}
+      variant={variant}
+      color={color}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className="flex items-center gap-2"
     >
-      {image && <img src={image} alt="icon" />} {/* Render image if provided */}
+      {image && <img src={image} alt="icon" className="w-5 h-5" />}
       {text}
     </Button>
   );

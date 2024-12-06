@@ -3,14 +3,14 @@ import { InputDefault } from '@/components/ui/input';
 import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import Logo from '@/assets/images/logo.svg';
-import { useArticles } from '@/hooks/useArticles';
+import { useArticle } from '@/hooks/useArticle';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
 
 export function EditArticlePage() {
   const [value, setValue] = React.useState('**Hello world!!!**');
   const { articleId } = useParams();
-  const { article } = useArticles(articleId); // Use the hook to fetch the article
+  const { article } = useArticle(articleId); // Use the hook to fetch the article
   console.log(article, 'articlee');
   if (!article) {
     return <DefaultSkeleton />;

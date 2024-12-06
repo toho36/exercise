@@ -3,16 +3,16 @@ import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { CommentSection } from '@/components/layout/commentSection/CommentSection';
 import { useArticles } from '@/hooks/useArticles';
 import { formatDate } from '@/utils/utils';
+import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
 
 export function ArticleDetailPage() {
-  const { articleId } = useParams(); // Extract articleId from URL parameters
-  const { articles, imageUrls } = useArticles();
+  const { articleId } = useParams();
+  const { articles } = useArticles();
 
   const article = articles.find(article => article.articleId === articleId);
 
-  let imageUrl = '';
-  if (articleId) {
-    imageUrl = imageUrls[articleId];
+  if (!article) {
+    return <DefaultSkeleton />;
   }
   return (
     <>
@@ -26,7 +26,7 @@ export function ArticleDetailPage() {
         </header>
         <div className="flex">
           <main className="flex flex-col w-3/4 gap-4xl">
-            <img src={imageUrl || ''} alt="Article Image" className="w-full h-auto mb-4" />
+            <img src={article?.imgBlob} alt="Article Image" className="w-full h-auto mb-4" />
             <p className="text-lg">{article?.perex}</p>
             <CommentSection />
           </main>

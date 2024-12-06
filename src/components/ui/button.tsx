@@ -22,7 +22,6 @@ export function ButtonDefault({
 }: ButtonDefaultProps) {
   return (
     <Button
-      placeholder=""
       variant={variant}
       color={color}
       type={type}

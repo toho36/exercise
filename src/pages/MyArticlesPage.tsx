@@ -111,7 +111,7 @@ export function MyArticlesPage() {
     className,
   }) => (
     <td className={className}>
-      <Typography variant="small" className="font-normal text-gray-600" placeholder={undefined}>
+      <Typography variant="small" className="font-normal text-gray-600">
         {children || 'N/A'}
       </Typography>
     </td>
@@ -125,7 +125,7 @@ export function MyArticlesPage() {
           <ButtonDefault color="blue" text="Create new article" />
         </Link>
       </div>
-      <Card placeholder={undefined}>
+      <Card>
         <table className="table-auto text-left">
           <thead>
             <tr>
@@ -137,7 +137,6 @@ export function MyArticlesPage() {
                       color="blue-gray"
                       variant="small"
                       className={`!font-bold ${head !== 'Actions' ? 'cursor-pointer' : ''}`}
-                      placeholder={undefined}
                       onClick={() =>
                         sortTable(
                           head === '# of Comments'
@@ -165,12 +164,7 @@ export function MyArticlesPage() {
                   <td className={classes}>
                     <div className="flex items-center gap-1">
                       <Checkbox crossOrigin={undefined} />
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-bold"
-                        placeholder={undefined}
-                      >
+                      <Typography variant="small" color="blue-gray" className="font-bold">
                         {title}
                       </Typography>
                     </div>

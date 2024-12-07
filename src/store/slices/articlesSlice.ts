@@ -2,14 +2,14 @@ import type { StateCreator } from 'zustand';
 
 export interface IArticles {
   articleId: string;
-  imageId: string;
+  imageId?: string;
   category: string;
   title: string;
   author: string;
   createdAt: string;
   perex: string;
   comments: number;
-  imgBlob: string;
+  imgBlob?: string;
 }
 
 interface IArticlesSlice {

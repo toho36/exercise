@@ -27,14 +27,16 @@ export async function fetchArticles(accessToken: string, apiKey: string): Promis
     const articles = response.data.items;
 
     // Fetch images and handle missing or failed image fetches.
+    console.log(articles, 'response?');
     const articlesWithImages = await Promise.all(
       articles.map(async article => {
+        if (!article.imageId) {
+          // Skip fetching the image if imageId is null
+          return { ...article, imgBlob: '' };
+        }
         try {
-          if (article.imageId) {
-            const imageUrl = await fetchImage(article.imageId, accessToken, apiKey);
-            return { ...article, imgBlob: imageUrl }; // Add imgBlob property with fetched image URL.
-          }
-          return { ...article, imgBlob: '' }; // No imageId, set imgBlob to an empty string.
+          const imageUrl = await fetchImage(article.imageId, accessToken, apiKey);
+          return { ...article, imgBlob: imageUrl }; // Add imgBlob property with fetched image URL.
         } catch (error) {
           const err = error as Error; // Explicitly cast the error to type Error.
           console.warn(`Failed to fetch image for article ID ${article.articleId}:`, err.message);

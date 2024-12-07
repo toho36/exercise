@@ -18,9 +18,10 @@ export function EditArticlePage() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [markedForDeletion, setMarkedForDeletion] = useState(false);
+
   const navigate = useNavigate();
   const authData = useStore(state => state.authData);
-  console.log(article, 'articlee');
 
   useEffect(() => {
     if (article) {
@@ -49,38 +50,9 @@ export function EditArticlePage() {
     }
   };
 
-  const handleImageDelete = async () => {
-    if (article?.imageId) {
-      try {
-        await axios.delete(`${API_BASE_URL}/images/${article.imageId}`, {
-          headers: {
-            'Authorization': `Bearer ${authData?.token || ''}`,
-            'X-API-KEY': authData?.xApiKey || '',
-          },
-        });
-
-        // After deleting the image, update the article object and set imageId to undefined
-        const updated = await axios.patch(
-          `${API_BASE_URL}/articles/${articleId}`,
-          {
-            imageId: undefined,
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${authData?.token || ''}`,
-              'X-API-KEY': authData?.xApiKey || '',
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-        console.log(updated, 'updated ');
-        setImagePreview(null); // Clear image preview
-        alert('Image deleted successfully');
-      } catch (error: any) {
-        console.error('Error deleting image:', error.response?.data || error.message);
-        alert('Failed to delete image. Please try again.');
-      }
-    }
+  const handleImageDelete = () => {
+    setImagePreview(null); // Clear the preview
+    setMarkedForDeletion(true); // Mark the image for deletion
   };
 
   const handleUpdate = async () => {
@@ -90,6 +62,37 @@ export function EditArticlePage() {
     }
 
     setIsSubmitting(true);
+    if (markedForDeletion) {
+      if (article?.imageId) {
+        try {
+          await axios.delete(`${API_BASE_URL}/images/${article.imageId}`, {
+            headers: {
+              'Authorization': `Bearer ${authData?.token || ''}`,
+              'X-API-KEY': authData?.xApiKey || '',
+            },
+          });
+
+          // After deleting the image, update the article object and set imageId to undefined
+          await axios.patch(
+            `${API_BASE_URL}/articles/${articleId}`,
+            {
+              imageId: undefined,
+            },
+            {
+              headers: {
+                'Authorization': `Bearer ${authData?.token || ''}`,
+                'X-API-KEY': authData?.xApiKey || '',
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+          setImagePreview(null); // Clear image preview
+        } catch (error: any) {
+          console.error('Error deleting image:', error.response?.data || error.message);
+          alert('Failed to delete image. Please try again.');
+        }
+      }
+    }
     let imageId = undefined;
     if (image) {
       const uploadResult = await handleImageUpload(image);
@@ -101,7 +104,6 @@ export function EditArticlePage() {
         imageId = uploadResult;
       }
     }
-    console.log(imageId, 'still id from article');
     try {
       await axios.patch(
         `${API_BASE_URL}/articles/${articleId}`,
@@ -124,6 +126,7 @@ export function EditArticlePage() {
       alert('Failed to update article. Please try again.');
     } finally {
       setIsSubmitting(false);
+      setMarkedForDeletion(false);
     }
   };
 
@@ -190,7 +193,7 @@ export function EditArticlePage() {
             <img src={imagePreview} alt="Image Preview" className="w-32 h-32 object-cover" />
           </div>
         )}
-        {article?.imageId && (
+        {imagePreview && (
           <div className="mt-3">
             <ButtonDefault color="red" text="Delete Image" onClick={handleImageDelete} />
           </div>

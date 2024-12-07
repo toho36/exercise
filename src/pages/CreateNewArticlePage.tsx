@@ -5,37 +5,19 @@ import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 import { useStore } from '@/store/store';
 import { useNavigate } from 'react-router-dom';
+import { useImageHandler } from '@/hooks/useImageHandler'; // Import the hook
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 export function CreateNewArticlePage() {
   const [title, setTitle] = useState('');
   const [value, setValue] = useState('**Hello world!!!**');
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const authData = useStore(state => state.authData);
+  const { image, imagePreview, handleImageUpload, handleImageChange } = useImageHandler(undefined);
 
-  const handleImageUpload = async (imageFile: File): Promise<string | null> => {
-    try {
-      const formData = new FormData();
-      formData.append('image', imageFile); // Append the file with the key 'image'
-
-      const response = await axios.post(`${API_BASE_URL}/images`, formData, {
-        headers: {
-          'Authorization': `Bearer ${authData?.token || ''}`,
-          'X-API-KEY': authData?.xApiKey || '',
-          'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
-        },
-      });
-      return response.data[0].imageId;
-    } catch (error: any) {
-      console.error('Error uploading image:', error.response?.data || error.message);
-      return null;
-    }
-  };
   const handlePublish = async () => {
     if (!title || !value) {
       alert('Please fill in all fields.');
@@ -76,20 +58,6 @@ export function CreateNewArticlePage() {
       alert('Failed to publish article. Please try again.');
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
     }
   };
 

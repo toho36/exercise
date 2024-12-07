@@ -1,8 +1,7 @@
-// components/ui/TableRow.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Checkbox, Typography } from '@material-tailwind/react';
-import { ITableRow } from '@/pages/MyArticlesPage'; // Import ITableRow from MyArticlesPage
+import { ITableRow } from '@/pages/MyArticlesPage';
 
 interface TableRowProps {
   article: ITableRow;

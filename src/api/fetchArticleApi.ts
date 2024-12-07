@@ -3,16 +3,15 @@ import { fetchImageApi } from '@/api/fetchImageApi';
 
 export interface IArticle {
   articleId: string;
-  imageId: string;
+  imageId?: string;
   category: string;
   title: string;
-  perex: string;
   author: string;
-  content: string | null;
+  content?: string | null;
   createdAt: string;
-  lastUpdatedAt: string;
-  comments: any[];
-  imgBlob: string; // Add this optional property
+  perex: string;
+  comments: number;
+  imgBlob?: string; // Add this optional property
 }
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';

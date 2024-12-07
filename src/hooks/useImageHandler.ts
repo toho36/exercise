@@ -4,6 +4,35 @@ import { useStore } from '@/store/store';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
+/**
+ * A custom hook that handles image upload, preview, and deletion for an article.
+ * Provides functionality to upload an image, preview it, mark it for deletion, and delete it from the server.
+ *
+ * @param {string | undefined} articleImageId - The ID of the article's image to be deleted (optional).
+ *
+ * @returns {object} - An object containing the following properties and functions:
+ *   - `image`: The selected image file for upload.
+ *   - `imagePreview`: The preview URL of the image (base64 string).
+ *   - `markedForDeletion`: A boolean indicating if the image is marked for deletion.
+ *   - `setImagePreview`: A function to manually set the image preview.
+ *   - `setMarkedForDeletion`: A function to manually set the deletion flag.
+ *   - `handleImagePreviewDelete`: A function to handle the deletion of the image preview and mark it for deletion.
+ *   - `handleImageUpload`: A function to upload an image to the server and return the image ID.
+ *   - `handleImageDelete`: A function to delete the image from the server.
+ *   - `handleImageChange`: A function to handle image selection, update the state, and generate a preview.
+ *
+ * @example
+ * const { image, imagePreview, handleImageUpload, handleImageDelete, handleImageChange } = useImageHandler(articleImageId);
+ *
+ * // Handle image upload
+ * const imageId = await handleImageUpload(image);
+ *
+ * // Handle image change (e.g., selecting a new image)
+ * <input type="file" onChange={handleImageChange} />
+ *
+ * // Handle image deletion
+ * handleImageDelete();
+ */
 export function useImageHandler(articleImageId: string | undefined) {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);

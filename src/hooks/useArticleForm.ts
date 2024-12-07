@@ -5,6 +5,31 @@ import { useStore } from '@/store/store';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
+/**
+ * A custom hook that manages the state and submission logic for updating an article.
+ * It provides functionality to handle form input for the article's title and perex,
+ * and it submits updates to the backend API.
+ *
+ * @param {string} articleId - The ID of the article to update.
+ * @param {string} initialTitle - The initial title of the article.
+ * @param {string} initialPerex - The initial perex (summary) of the article.
+ *
+ * @returns {object} An object containing the following properties and functions:
+ *   - `title`: The current value of the article's title.
+ *   - `setTitle`: A function to update the title in the form.
+ *   - `value`: The current value of the article's perex (summary).
+ *   - `setValue`: A function to update the perex in the form.
+ *   - `isSubmitting`: A boolean indicating if the form is in the process of submitting.
+ *   - `handleUpdate`: A function that submits the updated article information to the API.
+ *
+ * @example
+ * const { title, setTitle, value, setValue, isSubmitting, handleUpdate } = useArticleForm(articleId, initialTitle, initialPerex);
+ *
+ * // Handle form submit
+ * const onSubmit = () => {
+ *   handleUpdate(imageId, markedForDeletion);
+ * };
+ */
 export function useArticleForm(articleId: string, initialTitle: string, initialPerex: string) {
   const [title, setTitle] = useState(initialTitle);
   const [value, setValue] = useState(initialPerex);

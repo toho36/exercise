@@ -1,147 +1,61 @@
+import React, { useEffect } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
-import React, { useState, useEffect } from 'react';
 import MDEditor from '@uiw/react-md-editor';
-import axios from 'axios';
-import { useArticle } from '@/hooks/useArticle';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
-import { useStore } from '@/store/store';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { useArticle } from '@/hooks/useArticle';
+import { useImageHandler } from '@/hooks/useImageHandler';
+import { useArticleForm } from '@/hooks/useArticleForm';
 
 export function EditArticlePage() {
   const { articleId } = useParams();
   const { article } = useArticle(articleId);
-  const [title, setTitle] = useState('');
-  const [value, setValue] = useState('');
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [markedForDeletion, setMarkedForDeletion] = useState(false);
+  if (!articleId) {
+    return <DefaultSkeleton />; // or return an error message
+  }
+  const {
+    image,
+    imagePreview,
+    markedForDeletion,
+    setMarkedForDeletion,
+    handleImagePreviewDelete,
+    setImagePreview,
+    handleImageUpload,
+    handleImageDelete,
+    handleImageChange,
+  } = useImageHandler(article?.imageId);
 
-  const navigate = useNavigate();
-  const authData = useStore(state => state.authData);
+  const { title, setTitle, value, setValue, isSubmitting, handleUpdate } = useArticleForm(
+    articleId,
+    article?.title || '',
+    article?.perex || '',
+  );
 
   useEffect(() => {
     if (article) {
       setTitle(article.title);
       setValue(article.perex);
-      setImagePreview(article.imgBlob);
+      setImagePreview(article.imgBlob || ''); // Provide a default empty string
     }
-  }, [article]);
+  }, [article, setTitle, setValue, setImagePreview]);
 
-  const handleImageUpload = async (imageFile: File): Promise<string | null> => {
-    try {
-      const formData = new FormData();
-      formData.append('image', imageFile);
-
-      const response = await axios.post(`${API_BASE_URL}/images`, formData, {
-        headers: {
-          'Authorization': `Bearer ${authData?.token || ''}`,
-          'X-API-KEY': authData?.xApiKey || '',
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data[0].imageId;
-    } catch (error: any) {
-      console.error('Error uploading image:', error.response?.data || error.message);
-      return null;
-    }
-  };
-
-  const handleImageDelete = () => {
-    setImagePreview(null); // Clear the preview
-    setMarkedForDeletion(true); // Mark the image for deletion
-  };
-
-  const handleUpdate = async () => {
-    if (!title || !value) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    if (markedForDeletion) {
-      if (article?.imageId) {
-        try {
-          await axios.delete(`${API_BASE_URL}/images/${article.imageId}`, {
-            headers: {
-              'Authorization': `Bearer ${authData?.token || ''}`,
-              'X-API-KEY': authData?.xApiKey || '',
-            },
-          });
-
-          // After deleting the image, update the article object and set imageId to undefined
-          await axios.patch(
-            `${API_BASE_URL}/articles/${articleId}`,
-            {
-              imageId: undefined,
-            },
-            {
-              headers: {
-                'Authorization': `Bearer ${authData?.token || ''}`,
-                'X-API-KEY': authData?.xApiKey || '',
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          setImagePreview(null); // Clear image preview
-        } catch (error: any) {
-          console.error('Error deleting image:', error.response?.data || error.message);
-          alert('Failed to delete image. Please try again.');
-        }
-      }
+  const onSaveChanges = async () => {
+    if (markedForDeletion && article?.imageId) {
+      await handleImageDelete();
     }
     let imageId = undefined;
     if (image) {
       const uploadResult = await handleImageUpload(image);
       if (uploadResult === null) {
         alert('Failed to upload image. Please try again.');
-        setIsSubmitting(false);
         return;
       } else {
         imageId = uploadResult;
       }
     }
-    try {
-      await axios.patch(
-        `${API_BASE_URL}/articles/${articleId}`,
-        {
-          title,
-          perex: value,
-          imageId,
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${authData?.token || ''}`,
-            'X-API-KEY': authData?.xApiKey || '',
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      navigate('/my'); // Navigate back to the articles list or a success page
-    } catch (error: any) {
-      console.error('Error updating article:', error.response?.data || error.message);
-      alert('Failed to update article. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-      setMarkedForDeletion(false);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
+    await handleUpdate(imageId, markedForDeletion);
+    setMarkedForDeletion(false);
   };
 
   if (!article) {
@@ -155,7 +69,7 @@ export function EditArticlePage() {
         <ButtonDefault
           color="blue"
           text={isSubmitting ? 'Saving...' : 'Save Changes'}
-          onClick={handleUpdate}
+          onClick={onSaveChanges}
           disabled={isSubmitting}
         />
       </div>
@@ -195,7 +109,7 @@ export function EditArticlePage() {
         )}
         {imagePreview && (
           <div className="mt-3">
-            <ButtonDefault color="red" text="Delete Image" onClick={handleImageDelete} />
+            <ButtonDefault color="red" text="Delete Image" onClick={handleImagePreviewDelete} />
           </div>
         )}
       </div>

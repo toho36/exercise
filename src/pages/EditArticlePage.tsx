@@ -10,9 +10,9 @@ import { useArticleForm } from '@/hooks/useArticleForm';
 
 export function EditArticlePage() {
   const { articleId } = useParams();
-  const { article } = useArticle(articleId);
+  const { article, isLoading, error } = useArticle(articleId);
   if (!articleId) {
-    return <DefaultSkeleton />; // or return an error message
+    return <p>no data to display</p>; // or return an error message
   }
   const {
     image,
@@ -58,8 +58,16 @@ export function EditArticlePage() {
     setMarkedForDeletion(false);
   };
 
+  if (isLoading) {
+    return <DefaultSkeleton />; // Show loading skeleton while articles are loading
+  }
+
+  if (error) {
+    return <p>{error}</p>; // Show error message if an error occurred
+  }
+
   if (!article) {
-    return <DefaultSkeleton />;
+    return <p>no data to display</p>; // If there are no articles or they are empty
   }
 
   return (

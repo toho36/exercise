@@ -6,9 +6,13 @@ export function useArticle(articleId?: string) {
   const [article, setArticle] = useState<IArticle | null>(null);
   // Add a new state variable for multiple articles
   const authData = useStore(state => state.authData);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadArticles = async () => {
+      setIsLoading(true); // Set loading to true when starting the fetch
+      setError(null); // Reset previous errors
       try {
         const fetchedArticle = await fetchArticle(
           authData?.token || '',
@@ -21,11 +25,13 @@ export function useArticle(articleId?: string) {
         };
         setArticle(articleWithAuthor);
       } catch (error) {
-        console.error('Failed to load articles or article:', error);
+        setError('Failed to load article. Please try again later.'); // Set error message
+      } finally {
+        setIsLoading(false); // Set loading to false after fetching is done
       }
     };
 
     if (authData) loadArticles();
   }, [authData, articleId]);
-  return { article };
+  return { article, isLoading, error };
 }

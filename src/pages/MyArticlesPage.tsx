@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ButtonDefault } from '@/components/ui/button';
 import { Card, Checkbox, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { useArticles } from '@/hooks/useArticles';
+import { Dialog, DialogHeader, DialogBody, DialogFooter, Button } from '@material-tailwind/react';
+import axios from 'axios';
+import { IArticles } from '@/store/slices/articlesSlice';
+import { useStore } from '@/store/store';
 
 interface ITableRow {
   articleId: string;
@@ -13,27 +17,52 @@ interface ITableRow {
 }
 
 const TABLE_HEAD = [
-  {
-    head: 'Article title',
-    icon: <Checkbox crossOrigin={undefined} />,
-  },
-  {
-    head: 'Perex',
-  },
-  {
-    head: 'Author',
-  },
-  {
-    head: '# of Comments',
-  },
-  {
-    head: 'Actions',
-  },
+  { head: 'Article title', icon: <Checkbox crossOrigin={undefined} /> },
+  { head: 'Perex' },
+  { head: 'Author' },
+  { head: '# of Comments' },
+  { head: 'Actions' },
 ];
+
+const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 export function MyArticlesPage() {
   const { articles, setArticles } = useArticles();
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
+  const [open, setOpen] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
+  const authData = useStore(state => state.authData);
+
+  const handleOpen = () => setOpen(!open);
+
+  const handleDelete = async () => {
+    if (!articleToDelete) return;
+
+    try {
+      await axios.delete(`${API_BASE_URL}/articles/${articleToDelete}`, {
+        headers: {
+          'Authorization': `Bearer ${authData?.token || ''}`,
+          'X-API-KEY': authData?.xApiKey || '',
+        },
+      });
+
+      if (articles) {
+        const updatedArticles = articles.filter(article => article.articleId !== articleToDelete);
+        setArticles(updatedArticles);
+      }
+
+      setArticleToDelete(null);
+    } catch (error: any) {
+      console.error('Error deleting article:', error.response?.data || error.message);
+    } finally {
+      setOpen(false); // Close the modal after deletion.
+    }
+  };
+
+  const requestDelete = (articleId: string) => {
+    setArticleToDelete(articleId);
+    handleOpen();
+  };
 
   const sortTable = (key: keyof ITableRow) => {
     let direction = 'ascending';
@@ -44,13 +73,8 @@ export function MyArticlesPage() {
     const sortedRows = [...(articles || [])].sort((a, b) => {
       const aValue = a[key];
       const bValue = b[key];
-
-      if (aValue < bValue) {
-        return direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return direction === 'ascending' ? 1 : -1;
-      }
+      if (aValue < bValue) return direction === 'ascending' ? -1 : 1;
+      if (aValue > bValue) return direction === 'ascending' ? 1 : -1;
       return 0;
     });
 
@@ -130,7 +154,7 @@ export function MyArticlesPage() {
                         <i className="fa-solid fa-pen"></i>
                       </span>
                     </Link>
-                    <span className="cursor-pointer">
+                    <span className="cursor-pointer" onClick={() => requestDelete(articleId)}>
                       <i className="fa-solid fa-trash"></i>
                     </span>
                   </td>
@@ -140,6 +164,22 @@ export function MyArticlesPage() {
           </tbody>
         </table>
       </Card>
+
+      {/* Modal */}
+      <Dialog open={open} handler={handleOpen}>
+        <DialogHeader>Confirm Deletion</DialogHeader>
+        <DialogBody>
+          Are you sure you want to delete this article? This action cannot be undone.
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="text" color="red" onClick={handleOpen} className="mr-1">
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="green" onClick={handleDelete}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </>
   );
 }

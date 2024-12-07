@@ -15,8 +15,11 @@ export function useArticle(articleId?: string) {
           authData?.xApiKey || '',
           articleId || '',
         );
-
-        setArticle(fetchedArticle);
+        const articleWithAuthor = {
+          ...fetchedArticle,
+          author: authData?.tenant || fetchedArticle.author,
+        };
+        setArticle(articleWithAuthor);
       } catch (error) {
         console.error('Failed to load articles or article:', error);
       }

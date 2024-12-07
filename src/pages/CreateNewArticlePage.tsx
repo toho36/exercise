@@ -30,7 +30,6 @@ export function CreateNewArticlePage() {
           'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
         },
       });
-      console.log(response, 'image');
       return response.data[0].imageId;
     } catch (error: any) {
       console.error('Error uploading image:', error.response?.data || error.message);
@@ -38,34 +37,39 @@ export function CreateNewArticlePage() {
     }
   };
   const handlePublish = async () => {
-    if (!title || !value || !image) {
-      alert('Please fill in all fields and upload an image.');
+    if (!title || !value) {
+      alert('Please fill in all fields.');
       return;
     }
     setIsLoading(true);
-    const imageId = await handleImageUpload(image);
-    if (!imageId) {
-      alert('Failed to upload image. Please try again.');
-      setIsLoading(false);
-      return;
+
+    let imageId: string | null = null;
+    if (image) {
+      imageId = await handleImageUpload(image);
+      if (!imageId) {
+        alert('Failed to upload image. Please try again.');
+        setIsLoading(false);
+        return;
+      }
     }
 
     try {
-      await axios.post(
-        `${API_BASE_URL}/articles`,
-        {
-          title,
-          perex: value,
-          imageId,
+      const payload: any = {
+        title,
+        perex: value,
+      };
+
+      if (imageId) {
+        payload.imageId = imageId;
+      }
+
+      await axios.post(`${API_BASE_URL}/articles`, payload, {
+        headers: {
+          'Authorization': `Bearer ${authData?.token || ''}`,
+          'X-API-KEY': authData?.xApiKey || '',
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            'Authorization': `Bearer ${authData?.token || ''}`,
-            'X-API-KEY': authData?.xApiKey || '',
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      });
       navigate('/my');
     } catch (error: any) {
       console.error('Error publishing article:', error.response?.data || error.message);

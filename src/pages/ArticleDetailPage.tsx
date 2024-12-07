@@ -4,12 +4,11 @@ import { CommentSection } from '@/components/layout/commentSection/CommentSectio
 import { useArticles } from '@/hooks/useArticles';
 import { formatDate } from '@/utils/formatDate';
 import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
+import { useArticle } from '@/hooks/useArticle';
 
 export function ArticleDetailPage() {
   const { articleId } = useParams();
-  const { articles } = useArticles();
-
-  const article = articles?.find(article => article.articleId === articleId);
+  const { article } = useArticle(articleId);
 
   if (!article) {
     return <DefaultSkeleton />;

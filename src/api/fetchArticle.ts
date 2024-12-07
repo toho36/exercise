@@ -7,15 +7,14 @@ export interface IArticle {
   category: string;
   title: string;
   perex: string;
+  author: string;
   content: string | null;
   createdAt: string;
   lastUpdatedAt: string;
   comments: any[];
   imgBlob: string; // Add this optional property
 }
-interface IArticleWithImage extends IArticle {
-  imgBlob: string;
-}
+
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 /**
@@ -29,7 +28,7 @@ export async function fetchArticle(
   accessToken: string,
   apiKey: string,
   articleId: string,
-): Promise<IArticleWithImage> {
+): Promise<IArticle> {
   try {
     const response = await axios.get(`${API_BASE_URL}/articles/${articleId}`, {
       headers: {
@@ -39,13 +38,18 @@ export async function fetchArticle(
     });
 
     const article: IArticle = response.data;
-    const imageBlob = await fetchImage(article.imageId, accessToken, apiKey);
-
-    const fullArticle: IArticleWithImage = {
+    if (article.imageId) {
+      const imageBlob = await fetchImage(article.imageId, accessToken, apiKey);
+      const fullArticle: IArticle = {
+        ...article,
+        imgBlob: imageBlob,
+      };
+      return fullArticle;
+    }
+    const fullArticle: IArticle = {
       ...article,
-      imgBlob: imageBlob,
+      imgBlob: '',
     };
-
     return fullArticle;
   } catch (error) {
     console.error('Error fetching the article or image:', error);

@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, Typography, Button } from '@material-tailwind/react';
 import { formatDate } from '@/utils/formatDate';
 import { Link } from 'react-router-dom';
-import { IArticle } from '@/api/fetchArticles';
+import { IArticle } from '@/api/fetchArticlesApi';
 
 export function Article(article: IArticle) {
   return (

@@ -9,7 +9,7 @@ const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
  * @param {string} apiKey - The API key for authorization.
  * @returns {Promise<string>} A Promise that resolves to the URL of the fetched image.
  */
-export async function fetchImage(
+export async function fetchImageApi(
   imageId: string,
   accessToken: string,
   apiKey: string,

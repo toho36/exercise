@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store/store';
-import { fetchArticles } from '@/api/fetchArticles';
+import { fetchArticlesApi } from '@/api/fetchArticlesApi';
 
 export function useArticles() {
   const articles = useStore(state => state.articles);
@@ -15,7 +15,10 @@ export function useArticles() {
       setIsLoading(true); // Set loading to true when starting the fetch
       setError(null); // Reset previous errors
       try {
-        const fetchedArticles = await fetchArticles(authData?.token || '', authData?.xApiKey || '');
+        const fetchedArticles = await fetchArticlesApi(
+          authData?.token || '',
+          authData?.xApiKey || '',
+        );
         const articlesWithAuthor = fetchedArticles.map(article => ({
           ...article,
           author: authData?.tenant || article.author,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { fetchImage } from '@/api/fetchImage';
+import { fetchImageApi } from '@/api/fetchImageApi';
 
 export interface IArticle {
   articleId: string;
@@ -24,7 +24,7 @@ const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
  * @returns {Promise<Article[]>} A promise that resolves to an array of articles with images.
  * @throws {Error} If there is an error fetching the articles.
  */
-export async function fetchArticle(
+export async function fetchArticleApi(
   accessToken: string,
   apiKey: string,
   articleId: string,
@@ -39,7 +39,7 @@ export async function fetchArticle(
 
     const article: IArticle = response.data;
     if (article.imageId) {
-      const imageBlob = await fetchImage(article.imageId, accessToken, apiKey);
+      const imageBlob = await fetchImageApi(article.imageId, accessToken, apiKey);
       const fullArticle: IArticle = {
         ...article,
         imgBlob: imageBlob,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store/store';
-import { fetchArticle, IArticle } from '@/api/fetchArticle';
+import { fetchArticleApi, IArticle } from '@/api/fetchArticleApi';
 
 export function useArticle(articleId?: string) {
   const [article, setArticle] = useState<IArticle | null>(null);
@@ -14,7 +14,7 @@ export function useArticle(articleId?: string) {
       setIsLoading(true); // Set loading to true when starting the fetch
       setError(null); // Reset previous errors
       try {
-        const fetchedArticle = await fetchArticle(
+        const fetchedArticle = await fetchArticleApi(
           authData?.token || '',
           authData?.xApiKey || '',
           articleId || '',

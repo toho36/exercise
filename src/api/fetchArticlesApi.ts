@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { fetchImage } from '@/api/fetchImage';
+import { fetchImageApi } from '@/api/fetchImageApi';
 import { IArticles } from '@/store/slices/articlesSlice';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
@@ -11,7 +11,7 @@ const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
  * @returns {Promise<IArticles[]>} A promise that resolves to an array of articles with images.
  * @throws {Error} If there is an error fetching the articles.
  */
-export async function fetchArticles(accessToken: string, apiKey: string): Promise<IArticles[]> {
+export async function fetchArticlesApi(accessToken: string, apiKey: string): Promise<IArticles[]> {
   try {
     const response = await axios.get<{ items: IArticles[] }>(`${API_BASE_URL}/articles`, {
       headers: {
@@ -35,7 +35,7 @@ export async function fetchArticles(accessToken: string, apiKey: string): Promis
           return { ...article, imgBlob: '' };
         }
         try {
-          const imageUrl = await fetchImage(article.imageId, accessToken, apiKey);
+          const imageUrl = await fetchImageApi(article.imageId, accessToken, apiKey);
           return { ...article, imgBlob: imageUrl }; // Add imgBlob property with fetched image URL.
         } catch (error) {
           const err = error as Error; // Explicitly cast the error to type Error.

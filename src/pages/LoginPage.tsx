@@ -5,6 +5,23 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/store';
 
+export const createTenant = async (
+  name: string,
+  password: string,
+): Promise<{ apiKey: string; tenant: string }> => {
+  try {
+    const response = await axios.post<{ apiKey: string; name: string }>(`${API_BASE_URL}/tenants`, {
+      name,
+      password,
+    });
+    console.log('Tenant created. API Key:', response.data.apiKey);
+    return { apiKey: response.data.apiKey, tenant: response.data.name };
+  } catch (error: any) {
+    console.error('Error creating tenant:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 /**
  * LoginPage Component
@@ -29,25 +46,6 @@ export function LoginPage() {
    *
    * @returns {Promise<{ apiKey: string; tenant: string }>} A promise resolving to an object containing the API key and tenant name.
    */
-  const createTenant = async (
-    name: string,
-    password: string,
-  ): Promise<{ apiKey: string; tenant: string }> => {
-    try {
-      const response = await axios.post<{ apiKey: string; name: string }>(
-        `${API_BASE_URL}/tenants`,
-        {
-          name,
-          password,
-        },
-      );
-      console.log('Tenant created. API Key:', response.data.apiKey);
-      return { apiKey: response.data.apiKey, tenant: response.data.name };
-    } catch (error: any) {
-      console.error('Error creating tenant:', error.response?.data || error.message);
-      throw error;
-    }
-  };
 
   /**
    * Function to handle the login process.

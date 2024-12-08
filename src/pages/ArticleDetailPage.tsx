@@ -4,7 +4,7 @@ import { CommentSection } from '@/components/layout/commentSection/CommentSectio
 import { formatDate } from '@/utils/formatDate';
 import { useArticle } from '@/hooks/useArticle';
 import MDEditor from '@uiw/react-md-editor';
-import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
+import { DefaultSkeleton } from '@/components/layout/skeleton/SkeletonLoader';
 
 /**
  * ArticleDetailPage Component

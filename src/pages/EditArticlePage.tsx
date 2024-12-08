@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useArticle } from '@/hooks/useArticle';
 import { useImageHandler } from '@/hooks/useImageHandler';
 import { useArticleForm } from '@/hooks/useArticleForm';
-import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
+import { DefaultSkeleton } from '@/components/layout/skeleton/SkeletonLoader';
 /**
  * EditArticlePage Component
  * This component allows users to edit an existing article. It fetches the article data based on the articleId

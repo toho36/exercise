@@ -1,8 +1,7 @@
 import { useArticles } from '@/hooks/useArticles';
+import { useStore } from '@/store/store';
 import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 import { Article } from '@/components/layout/articleList/Article';
-import { useStore } from '@/store/store';
-
 /**
  * ArticleListPage Component
  * This component displays a list of recent articles. It checks if the user is logged in

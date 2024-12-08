@@ -3,11 +3,10 @@ import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
 import MDEditor from '@uiw/react-md-editor';
 import { useParams } from 'react-router-dom';
-import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 import { useArticle } from '@/hooks/useArticle';
 import { useImageHandler } from '@/hooks/useImageHandler';
 import { useArticleForm } from '@/hooks/useArticleForm';
-
+import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 /**
  * EditArticlePage Component
  * This component allows users to edit an existing article. It fetches the article data based on the articleId

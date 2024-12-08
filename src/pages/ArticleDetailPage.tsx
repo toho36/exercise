@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { CommentSection } from '@/components/layout/commentSection/CommentSection';
 import { formatDate } from '@/utils/formatDate';
-import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 import { useArticle } from '@/hooks/useArticle';
 import MDEditor from '@uiw/react-md-editor';
+import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 
 /**
  * ArticleDetailPage Component

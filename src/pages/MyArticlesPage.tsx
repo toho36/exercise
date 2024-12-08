@@ -6,9 +6,9 @@ import { useStore } from '@/store/store';
 import DeleteDialog from '@/components/layout/dialog/DeleteDialog';
 import { useDeleteArticle } from '@/hooks/useDeleteArticle';
 import { useSortTable } from '@/hooks/useSortTable';
-import TableCard from '@/components/ui/TableCard';
-import TableHeader from '@/components/ui/TableHeader';
-import TableRow from '@/components/ui/TableRow';
+import TableCard from '@/components/layout/table/TableCard';
+import TableHeader from '@/components/layout/table/TableHeader';
+import TableRow from '@/components/layout/table/TableRow';
 
 export interface ITableRow {
   articleId: string;
@@ -18,6 +18,13 @@ export interface ITableRow {
   comments?: number;
 }
 
+/**
+ * MyArticlesPage Component
+ * This component displays a list of articles belonging to the authenticated user.
+ * It includes functionalities to sort articles, create a new article, and delete existing articles.
+ *
+ * @returns {JSX.Element} The MyArticlesPage component.
+ */
 export function MyArticlesPage() {
   const { articles, setArticles } = useArticles();
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);

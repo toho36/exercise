@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { CommentSection } from '@/components/layout/commentSection/CommentSection';
-import { useArticles } from '@/hooks/useArticles';
 import { formatDate } from '@/utils/formatDate';
 import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
 import { useArticle } from '@/hooks/useArticle';
+import MDEditor from '@uiw/react-md-editor';
 
 export function ArticleDetailPage() {
   const { articleId } = useParams();
@@ -26,7 +26,10 @@ export function ArticleDetailPage() {
         <div className="flex">
           <main className="flex flex-col w-3/4 gap-4xl">
             <img src={article?.imgBlob} alt="Article Image" className="w-full h-auto mb-4" />
-            <p className="text-lg">{article?.perex}</p>
+            <div data-color-mode="light">
+              <MDEditor.Markdown source={article?.perex || ''} className="text-lg" />
+            </div>
+
             <CommentSection />
           </main>
           <div className="w-px bg-gray-300 mx-4"></div>

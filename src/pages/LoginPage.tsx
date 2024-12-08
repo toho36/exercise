@@ -6,14 +6,29 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/store';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
-
+/**
+ * LoginPage Component
+ * This component represents the login page where users can input their email and password to log in.
+ * The process first creates a tenant using the email and password, then uses the received API key to log in
+ * and retrieve an access token. Upon successful login, the authentication data is stored in the application's state
+ * and the user is redirected to a different page.
+ *
+ * @returns {JSX.Element} The LoginPage component.
+ */
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const setAuthData = useStore(state => state.setAuthData);
 
-  // Function to create a tenant and get the API key
+  /**
+   * Function to create a tenant and get the API key.
+   *
+   * @param {string} name - The name (email) of the tenant.
+   * @param {string} password - The password associated with the tenant.
+   *
+   * @returns {Promise<{ apiKey: string; tenant: string }>} A promise resolving to an object containing the API key and tenant name.
+   */
   const createTenant = async (
     name: string,
     password: string,
@@ -34,6 +49,15 @@ export function LoginPage() {
     }
   };
 
+  /**
+   * Function to handle the login process.
+   * This function is called when the login form is submitted.
+   * It first creates a tenant, then logs in using the API key to retrieve the access token.
+   *
+   * @param {React.FormEvent} event - The form submission event.
+   *
+   * @returns {void} The function performs login and handles any errors during the process.
+   */
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {

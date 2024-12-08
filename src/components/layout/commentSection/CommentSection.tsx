@@ -23,6 +23,21 @@ const dummyComments = [
   },
 ];
 
+/**
+ * A functional React component that displays a comment section with a list of comments,
+ * voting functionality for upvotes and downvotes, and an input field to join the discussion.
+ *
+ * This component includes:
+ * - A list of comments, each with an author, timestamp, text, and score.
+ * - Upvote and downvote buttons to increase or decrease the comment score.
+ * - An input field for users to participate in the discussion.
+ *
+ * @example
+ * // Render the CommentSection
+ * <CommentSection />
+ *
+ * @returns {JSX.Element} A styled comment section with voting and input functionality.
+ */
 export function CommentSection() {
   const [comments, setComments] = useState(dummyComments);
 

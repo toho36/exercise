@@ -11,6 +11,24 @@ interface IButtonDefaultProps {
   disabled?: boolean;
 }
 
+/**
+ * A customizable button component that wraps Material Tailwind's Button component.
+ * It allows customization of color, text, icon, variant, type, and the `onClick` event.
+ *
+ * @param {string} [color='blue'] - The color of the button. Defaults to 'blue'.
+ * @param {string} text - The text displayed on the button.
+ * @param {'filled' | 'outlined' | 'text'} [variant='filled'] - The variant of the button (filled, outlined, or text).
+ * @param {string} [image] - The URL of an image/icon to display alongside the text.
+ * @param {'button' | 'submit' | 'reset'} [type='button'] - The button type (button, submit, or reset).
+ * @param {() => void} [onClick] - The click handler for the button.
+ * @param {boolean} [disabled=false] - Whether the button is disabled.
+ *
+ * @example
+ * // A button with text and an icon
+ * <ButtonDefault text="Click Me" image="/path/to/icon.svg" onClick={handleClick} />
+ *
+ * @returns {JSX.Element} A button element with the specified props.
+ */
 export function ButtonDefault({
   color = 'blue',
   text,

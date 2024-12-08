@@ -6,6 +6,23 @@ import { ButtonDefault } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { AvatarDefault } from '../avatar/Avatar';
 import { useStore } from '@/store/store';
+
+/**
+ * A functional React component that renders a default navigation bar for the application.
+ * The navigation bar displays links to different pages and adjusts its content based on the user's authentication state.
+ *
+ * This component includes:
+ * - A logo and navigation links (e.g., Recent Articles, About).
+ * - Conditional links and actions (e.g., My Articles, Create Articles, Log Out) when the user is authenticated.
+ * - A login button when the user is not authenticated.
+ * - Responsive behavior to collapse the navigation on smaller screens.
+ *
+ * @example
+ * // Render the NavbarDefault component
+ * <NavbarDefault />
+ *
+ * @returns {JSX.Element} A responsive and dynamic navigation bar.
+ */
 export function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
   const isAuthenticated = useStore(state => !!state.authData);

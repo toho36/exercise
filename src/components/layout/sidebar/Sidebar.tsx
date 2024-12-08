@@ -2,6 +2,17 @@ import { Card, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { useArticles } from '@/hooks/useArticles';
 
+/**
+ * A functional React component that renders a sidebar displaying a list of related articles.
+ * The sidebar fetches articles using a custom hook (`useArticles`) and displays the article titles
+ * and descriptions (`perex`). Clicking on an article navigates to its detailed view.
+ *
+ * @example
+ * // Render the Sidebar component
+ * <Sidebar />
+ *
+ * @returns {JSX.Element} A sidebar component with related articles.
+ */
 export function Sidebar() {
   const { articles } = useArticles();
 

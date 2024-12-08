@@ -1,5 +1,16 @@
 import { Typography } from '@material-tailwind/react';
 
+/**
+ * A skeleton component that serves as a placeholder while content is loading.
+ * The component mimics the structure of a typical layout with a circular image or icon
+ * and multiple lines of text to represent headings and paragraphs.
+ *
+ * @example
+ * // Render the DefaultSkeleton component during loading
+ * <DefaultSkeleton />
+ *
+ * @returns {JSX.Element} A loading skeleton with animated placeholders.
+ */
 export function DefaultSkeleton() {
   return (
     <div className="flex animate-pulse flex-wrap items-center gap-8 pt-10">

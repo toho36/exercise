@@ -1,8 +1,16 @@
 import { useArticles } from '@/hooks/useArticles';
-import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
-import { Article } from '@/components/layout/articleList/article';
+import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
+import { Article } from '@/components/layout/articleList/Article';
 import { useStore } from '@/store/store';
 
+/**
+ * ArticleListPage Component
+ * This component displays a list of recent articles. It checks if the user is logged in
+ * and if there are articles available. It shows a loading skeleton while articles are being fetched
+ * and an error message if something goes wrong. If no articles are available, it displays a message.
+ *
+ * @returns {JSX.Element} The ArticleListPage component.
+ */
 export function ArticleListPage() {
   const { articles, isLoading, error } = useArticles();
   const authData = useStore(state => state.authData);

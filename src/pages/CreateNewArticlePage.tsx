@@ -9,6 +9,17 @@ import { useImageHandler } from '@/hooks/useImageHandler'; // Import the hook
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
+/**
+ * CreateNewArticlePage Component
+ * This component allows the user to create a new article. It includes inputs for the article title,
+ * featured image, and content, with the option to upload an image. The content editor uses Markdown.
+ * The article is published via an API request after all fields are filled in.
+ *
+ * The component performs validation to ensure all fields are filled before publishing.
+ * If there is an image, it is uploaded first, and then the article is submitted.
+ *
+ * @returns {JSX.Element} The CreateNewArticlePage component.
+ */
 export function CreateNewArticlePage() {
   const [title, setTitle] = useState('');
   const [value, setValue] = useState('**Hello world!!!**');

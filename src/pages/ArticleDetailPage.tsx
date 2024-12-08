@@ -2,10 +2,18 @@ import { useParams } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/sidebar/Sidebar';
 import { CommentSection } from '@/components/layout/commentSection/CommentSection';
 import { formatDate } from '@/utils/formatDate';
-import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
+import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 import { useArticle } from '@/hooks/useArticle';
 import MDEditor from '@uiw/react-md-editor';
 
+/**
+ * ArticleDetailPage Component
+ * This component displays the details of a single article, including the title, author, creation date, image, and content.
+ * It also includes a sidebar with related articles and a comment section for user interaction.
+ * If the article data is not yet loaded, a skeleton loader is shown.
+ *
+ * @returns {JSX.Element} The ArticleDetailPage component.
+ */
 export function ArticleDetailPage() {
   const { articleId } = useParams();
   const { article } = useArticle(articleId);

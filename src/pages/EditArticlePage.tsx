@@ -3,11 +3,19 @@ import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
 import MDEditor from '@uiw/react-md-editor';
 import { useParams } from 'react-router-dom';
-import { DefaultSkeleton } from '@/components/layout/skeleton/skeleton';
+import { DefaultSkeleton } from '@/components/layout/skeleton/Skeleton';
 import { useArticle } from '@/hooks/useArticle';
 import { useImageHandler } from '@/hooks/useImageHandler';
 import { useArticleForm } from '@/hooks/useArticleForm';
 
+/**
+ * EditArticlePage Component
+ * This component allows users to edit an existing article. It fetches the article data based on the articleId
+ * from the URL and displays the current title, content (Markdown editor), and the featured image. Users can update
+ * the title, content, and image. The component handles image uploads, image preview, and deletion of the existing image.
+ *
+ * @returns {JSX.Element} The EditArticlePage component.
+ */
 export function EditArticlePage() {
   const { articleId } = useParams();
   const { article, isLoading, error } = useArticle(articleId);

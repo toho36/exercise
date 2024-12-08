@@ -1,5 +1,4 @@
 import { test, expect } from 'vitest';
-import axios from 'axios';
 import { createTenant } from './LoginPage';
 
 test('createTenant', async () => {

@@ -30,7 +30,7 @@ export function useArticles() {
   const setArticles = useStore(state => state.setArticles);
   const authData = useStore(state => state.authData);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

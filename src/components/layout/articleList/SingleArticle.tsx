@@ -35,10 +35,14 @@ import { IArticle } from '@/api/fetchArticleApi';
 export function Article(article: IArticle) {
   return (
     <Card key={article.articleId} className="w-[48rem]  flex-row">
-      <CardHeader shadow={false} floated={false} className="rounded-sm w-[48rem] ">
-        <img src={article.imgBlob} alt="card-image" className="h-[244px]  " />
+      <CardHeader shadow={false} floated={false} className="rounded-sm w-auto ">
+        <img
+          src={article.imgBlob}
+          alt="card-image"
+          className="max-h-[244px] max-w-[244px] min-w-[244px] "
+        />
       </CardHeader>
-      <CardBody className="p-0">
+      <CardBody className="p-0 w-2/3">
         <Typography variant="h4" color="blue-gray" className="ml-5 my-2">
           {article.title}
         </Typography>

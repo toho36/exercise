@@ -5,7 +5,8 @@ import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 import { useStore } from '@/store/store';
 import { useNavigate } from 'react-router-dom';
-import { useImageHandler } from '@/hooks/useImageHandler'; // Import the hook
+import { useImageHandler } from '@/hooks/useImageHandler';
+import { publishArticle } from '@/api/publishArticleApi';
 
 const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
@@ -56,13 +57,7 @@ export function CreateNewArticlePage() {
         payload.imageId = imageId;
       }
 
-      await axios.post(`${API_BASE_URL}/articles`, payload, {
-        headers: {
-          'Authorization': `Bearer ${authData?.token || ''}`,
-          'X-API-KEY': authData?.xApiKey || '',
-          'Content-Type': 'application/json',
-        },
-      });
+      await publishArticle(title, value, imageId, authData);
       navigate('/my-articles');
     } catch (error: any) {
       console.error('Error publishing article:', error.response?.data || error.message);

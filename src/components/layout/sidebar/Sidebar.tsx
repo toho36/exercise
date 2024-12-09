@@ -7,10 +7,6 @@ import { useArticles } from '@/hooks/useArticles';
  * The sidebar fetches articles using a custom hook (`useArticles`) and displays the article titles
  * and descriptions (`perex`). Clicking on an article navigates to its detailed view.
  *
- * @example
- * // Render the Sidebar component
- * <Sidebar />
- *
  * @returns {JSX.Element} A sidebar component with related articles.
  */
 export function Sidebar() {

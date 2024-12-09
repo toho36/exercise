@@ -19,22 +19,6 @@ interface IDeleteDialogProps {
  * @param {() => void} props.handleOpen - Toggles the dialog's open state.
  * @param {() => void} props.handleDelete - Executes the delete action when confirmed.
  *
- * @example
- * const [isOpen, setIsOpen] = useState(false);
- *
- * const toggleDialog = () => setIsOpen(!isOpen);
- * const confirmDelete = () => {
- *   console.log('Item deleted!');
- *   toggleDialog();
- * };
- *
- * return (
- *   <>
- *     <Button onClick={toggleDialog}>Delete Item</Button>
- *     <DeleteDialog open={isOpen} handleOpen={toggleDialog} handleDelete={confirmDelete} />
- *   </>
- * );
- *
  * @returns {JSX.Element} A modal dialog for confirming deletion.
  */
 export default function DeleteDialog({ open, handleOpen, handleDelete }: IDeleteDialogProps) {

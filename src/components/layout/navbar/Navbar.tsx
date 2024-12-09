@@ -17,10 +17,6 @@ import { useStore } from '@/store/store';
  * - A login button when the user is not authenticated.
  * - Responsive behavior to collapse the navigation on smaller screens.
  *
- * @example
- * // Render the NavbarDefault component
- * <NavbarDefault />
- *
  * @returns {JSX.Element} A responsive and dynamic navigation bar.
  */
 export function NavbarDefault() {

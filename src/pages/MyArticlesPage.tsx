@@ -40,9 +40,8 @@ export function MyArticlesPage() {
     authData,
   );
 
-  if (!articles) {
-    return <p className="pt-10">No data to display</p>; // or return an error message
-  }
+  if (!articles) return <p className="pt-10">No data to display</p>;
+
   return (
     <>
       <div className="flex gap-8 my-5">

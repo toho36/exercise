@@ -5,10 +5,6 @@ import { Typography } from '@material-tailwind/react';
  * The component mimics the structure of a typical layout with a circular image or icon
  * and multiple lines of text to represent headings and paragraphs.
  *
- * @example
- * // Render the DefaultSkeleton component during loading
- * <DefaultSkeleton />
- *
  * @returns {JSX.Element} A loading skeleton with animated placeholders.
  */
 export function DefaultSkeleton() {

@@ -17,19 +17,6 @@ import { IArticle } from '@/api/fetchArticleApi';
  *   - `imgBlob` (string): A URL or blob representing the article's main image.
  *   - `comments` (number): The number of comments on the article.
  *
- * @example
- * const article = {
- *   articleId: '123',
- *   title: 'The Future of React',
- *   author: 'John Doe',
- *   createdAt: '2024-01-01T12:00:00Z',
- *   perex: 'React continues to evolve with new features...',
- *   imgBlob: 'https://example.com/image.jpg',
- *   comments: 12,
- * };
- *
- * return <Article {...article} />;
- *
  * @returns {JSX.Element} A styled card component displaying the article details.
  */
 export function Article(article: IArticle) {

@@ -1,7 +1,7 @@
 import App from '@/App';
 import { ArticleListPage } from '@/pages/ArticleListPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { ArticleDetailPage } from '@/pages/ArticleDetailPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { MyArticlesPage } from '@/pages/MyArticlesPage';

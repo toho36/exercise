@@ -35,8 +35,8 @@ export function useArticles() {
 
   useEffect(() => {
     const loadArticles = async () => {
-      setIsLoading(true); // Set loading to true when starting the fetch
-      setError(null); // Reset previous errors
+      setIsLoading(true);
+      setError(null);
       try {
         const fetchedArticles = await fetchArticlesApi(
           authData?.token || '',
@@ -46,16 +46,16 @@ export function useArticles() {
           ...article,
           author: authData?.tenant || article.author,
         }));
-        setArticles(articlesWithAuthor); // Save the articles in the store
+        setArticles(articlesWithAuthor);
       } catch (error) {
         console.error('Failed to load articles:', error);
-        setError('Failed to load articles. Please try again later.'); // Set error message
+        setError('Failed to load articles. Please try again later.');
       } finally {
-        setIsLoading(false); // Set loading to false after fetching is done
+        setIsLoading(false);
       }
     };
 
     if (authData) loadArticles();
-  }, [authData, setArticles]); // Dependency on authData
+  }, [authData, setArticles]);
   return { articles, setArticles, isLoading, error };
 }

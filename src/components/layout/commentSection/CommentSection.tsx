@@ -32,10 +32,6 @@ const dummyComments = [
  * - Upvote and downvote buttons to increase or decrease the comment score.
  * - An input field for users to participate in the discussion.
  *
- * @example
- * // Render the CommentSection
- * <CommentSection />
- *
  * @returns {JSX.Element} A styled comment section with voting and input functionality.
  */
 export function CommentSection() {

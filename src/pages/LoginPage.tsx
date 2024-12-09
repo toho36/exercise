@@ -38,24 +38,6 @@ export function LoginPage() {
   const navigate = useNavigate();
   const setAuthData = useStore(state => state.setAuthData);
 
-  /**
-   * Function to create a tenant and get the API key.
-   *
-   * @param {string} name - The name (email) of the tenant.
-   * @param {string} password - The password associated with the tenant.
-   *
-   * @returns {Promise<{ apiKey: string; tenant: string }>} A promise resolving to an object containing the API key and tenant name.
-   */
-
-  /**
-   * Function to handle the login process.
-   * This function is called when the login form is submitted.
-   * It first creates a tenant, then logs in using the API key to retrieve the access token.
-   *
-   * @param {React.FormEvent} event - The form submission event.
-   *
-   * @returns {void} The function performs login and handles any errors during the process.
-   */
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -76,17 +58,16 @@ export function LoginPage() {
         },
       );
 
-      console.log('Login successful. Access Token:', response.data.access_token);
       setAuthData({
         xApiKey: apiKey,
         token: response.data.access_token,
-        tenant, // Pass the tenant's name
+        tenant,
       });
-      // Handle successful login, e.g., store token, redirect, etc.
-      navigate('/my-articles'); // Redirect to /my-articles on successful login
+
+      // Redirect to /my-articles on successful login
+      navigate('/my-articles');
     } catch (error: any) {
       console.error('Login error:', error.response?.data || error.message);
-      // Handle login error, e.g., show error message
     }
   };
 

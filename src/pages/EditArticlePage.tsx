@@ -18,9 +18,8 @@ import { DefaultSkeleton } from '@/components/layout/skeleton/SkeletonLoader';
 export function EditArticlePage() {
   const { articleId } = useParams();
   const { article, isLoading, error } = useArticle(articleId);
-  if (!articleId) {
-    return <p className="pt-10">No data to display</p>; // or return an error message
-  }
+  if (!articleId) return <p className="pt-10">No data to display</p>;
+
   const {
     image,
     imagePreview,
@@ -43,7 +42,7 @@ export function EditArticlePage() {
     if (article) {
       setTitle(article.title);
       setValue(article.perex);
-      setImagePreview(article.imgBlob || ''); // Provide a default empty string
+      setImagePreview(article.imgBlob || '');
     }
   }, [article, setTitle, setValue, setImagePreview]);
 
@@ -65,17 +64,9 @@ export function EditArticlePage() {
     setMarkedForDeletion(false);
   };
 
-  if (isLoading) {
-    return <DefaultSkeleton />; // Show loading skeleton while articles are loading
-  }
-
-  if (error) {
-    return <p className="pt-10">{error}</p>; // Show error message if an error occurred
-  }
-
-  if (!article) {
-    return <p className="pt-10">No data to display</p>; // If there are no articles or they are empty
-  }
+  if (isLoading) return <DefaultSkeleton />;
+  if (error) return <p className="pt-10">{error}</p>;
+  if (!article) return <p className="pt-10">No data to display</p>;
 
   return (
     <div className="my-5 w-2/4">

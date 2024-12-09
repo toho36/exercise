@@ -1,4 +1,4 @@
-import { ITableRow } from '@/pages/my-articlesArticlesPage';
+import { ITableRow } from '@/pages/MyArticlesPage';
 import { IArticles } from '@/store/slices/articlesSlice';
 
 /**

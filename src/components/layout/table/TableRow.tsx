@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Checkbox, Typography } from '@material-tailwind/react';
-import { ITableRow } from '@/pages/my-articlesArticlesPage';
+import { ITableRow } from '@/pages/MyArticlesPage';
 
 interface ITableRowProps {
   article: ITableRow;

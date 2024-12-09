@@ -54,7 +54,7 @@ export function CommentSection() {
       <div className="py-3">
         <h1>Comments ({comments.length})</h1>
       </div>
-      <div className="flex items-center mb-2.5">
+      <div className="flex items-center mb-2.5 gap-4">
         <AvatarDefault />
 
         <InputDefault placeholder="join the discussion" type="text" />

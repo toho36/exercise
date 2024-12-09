@@ -52,7 +52,7 @@ export function NavbarDefault() {
             </Typography>
           </Link>
         </div>
-        <div className="flex">
+        <div className="flex gap-5">
           {isAuthenticated && (
             <>
               <Link to={'/my'}>

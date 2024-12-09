@@ -16,8 +16,14 @@ const TableRow: React.FC<TableRowProps> = ({ article, requestDelete }) => (
         {article.title}
       </Typography>
     </td>
-    <td className="p-4">
-      <Typography variant="small" className="font-normal text-gray-600">
+    <td className="p-4 max-w-[420px]">
+      <Typography
+        variant="small"
+        className="font-normal 
+      
+              line-clamp-1
+      text-gray-600"
+      >
         {article.perex}
       </Typography>
     </td>

@@ -41,7 +41,7 @@ export function MyArticlesPage() {
   );
 
   if (!articles) {
-    return <p>no data to display</p>; // or return an error message
+    return <p className="pt-10">No data to display</p>; // or return an error message
   }
   return (
     <>

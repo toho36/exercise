@@ -97,11 +97,11 @@ export function LoginPage() {
           <h2 className="text-xl font-bold ">Log In</h2>
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1">
-              Email:
+              Username:
             </label>
             <InputDefault
               type="text"
-              placeholder="me@example.com"
+              placeholder="Username or email"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />

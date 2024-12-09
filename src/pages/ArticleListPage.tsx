@@ -15,18 +15,20 @@ export function ArticleListPage() {
   const authData = useStore(state => state.authData);
 
   if (!authData || !authData.token) {
-    return <p>Please log in and create an article to view the list of articles.</p>; // Message for not logged in users
+    return (
+      <p className="pt-10">Please log in and create an article to view the list of articles.</p>
+    ); // Message for not logged in users
   }
   if (isLoading) {
     return <DefaultSkeleton />; // Show loading skeleton while articles are loading
   }
 
   if (error) {
-    return <p>{error}</p>; // Show error message if an error occurred
+    return <p className="pt-10">{error}</p>; // Show error message if an error occurred
   }
 
   if (!articles || articles.length === 0) {
-    return <p>no data to display</p>; // If there are no articles or they are empty
+    return <p className="pt-10">No data to display</p>; // If there are no articles or they are empty
   }
   return (
     <div>

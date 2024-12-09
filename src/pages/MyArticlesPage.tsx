@@ -15,6 +15,7 @@ export interface ITableRow {
   title: string;
   perex: string;
   author: string;
+  createdAt: string;
   comments?: number;
 }
 

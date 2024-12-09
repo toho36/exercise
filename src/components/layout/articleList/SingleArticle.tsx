@@ -34,23 +34,23 @@ import { IArticle } from '@/api/fetchArticleApi';
  */
 export function Article(article: IArticle) {
   return (
-    <Card key={article.articleId} className="w-full max-w-[48rem] flex-row">
-      <CardHeader shadow={false} floated={false} className="m-0 w-2/5 shrink-0 rounded-r-none">
-        <img src={article.imgBlob} alt="card-image" className="h-full w-full object-cover" />
+    <Card key={article.articleId} className="w-[48rem]  flex-row">
+      <CardHeader shadow={false} floated={false} className="rounded-sm w-[48rem] ">
+        <img src={article.imgBlob} alt="card-image" className="h-[244px]  " />
       </CardHeader>
-      <CardBody>
-        <Typography variant="h4" color="blue-gray" className="mb-2">
+      <CardBody className="p-0">
+        <Typography variant="h4" color="blue-gray" className="ml-5 my-2">
           {article.title}
         </Typography>
-        <Typography color="gray" className="mb-2 font-normal">
+        <Typography color="gray" className="ml-5 mb-2 font-normal">
           {article.author} • {formatDate(article.createdAt)}
         </Typography>
-        <Typography color="gray" className="mb-8 font-normal">
+        <Typography color="gray" className=" mx-5 mb-8 font-normal line-clamp-4">
           {article.perex}
         </Typography>
-        <div className="flex justify-between items-center">
+        <div className="mb-5 mr-5 flex  items-center">
           <Link to={`/article/${article.articleId}`}>
-            <Button variant="text" className="flex items-center gap-2">
+            <Button variant="text" className="flex items-center gap-2" color="blue">
               Learn More
               <svg
                 xmlns="http://www.w3.org/2000/svg"

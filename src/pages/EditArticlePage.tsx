@@ -19,7 +19,7 @@ export function EditArticlePage() {
   const { articleId } = useParams();
   const { article, isLoading, error } = useArticle(articleId);
   if (!articleId) {
-    return <p>no data to display</p>; // or return an error message
+    return <p className="pt-10">No data to display</p>; // or return an error message
   }
   const {
     image,
@@ -70,11 +70,11 @@ export function EditArticlePage() {
   }
 
   if (error) {
-    return <p>{error}</p>; // Show error message if an error occurred
+    return <p className="pt-10">{error}</p>; // Show error message if an error occurred
   }
 
   if (!article) {
-    return <p>no data to display</p>; // If there are no articles or they are empty
+    return <p className="pt-10">No data to display</p>; // If there are no articles or they are empty
   }
 
   return (
@@ -134,8 +134,11 @@ export function EditArticlePage() {
           Content
         </label>
         <div data-color-mode="light">
-          <div className="wmde-markdown-var"> </div>
-          <MDEditor value={value} onChange={newValue => setValue(newValue || '')} />
+          <MDEditor
+            value={value}
+            onChange={newValue => setValue(newValue || '')}
+            className="min-h-96"
+          />
         </div>
       </div>
     </div>

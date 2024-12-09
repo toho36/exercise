@@ -1,7 +1,6 @@
-import React from 'react';
 import { Dialog, DialogHeader, DialogBody, DialogFooter, Button } from '@material-tailwind/react';
 
-interface DeleteDialogProps {
+interface IDeleteDialogProps {
   open: boolean;
   handleOpen: () => void;
   handleDelete: () => void;
@@ -38,7 +37,7 @@ interface DeleteDialogProps {
  *
  * @returns {JSX.Element} A modal dialog for confirming deletion.
  */
-const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, handleOpen, handleDelete }) => {
+export default function DeleteDialog({ open, handleOpen, handleDelete }: IDeleteDialogProps) {
   return (
     <Dialog open={open} handler={handleOpen}>
       <DialogHeader>Confirm Deletion</DialogHeader>
@@ -55,6 +54,4 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, handleOpen, handleDel
       </DialogFooter>
     </Dialog>
   );
-};
-
-export default DeleteDialog;
+}

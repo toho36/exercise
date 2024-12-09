@@ -47,7 +47,7 @@ export function MyArticlesPage() {
     <>
       <div className="flex gap-8 my-5">
         <p className="text-5xl">My Articles</p>
-        <Link to={'/new'}>
+        <Link to={'/create-article'}>
           <ButtonDefault color="blue" text="Create new article" />
         </Link>
       </div>

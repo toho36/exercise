@@ -27,11 +27,11 @@ import { deleteArticleApi } from '@/api/deleteArticleApi';
  * // Handle article deletion
  * handleDelete(); // Deletes the article and updates the list
  */
-export const useDeleteArticle = (
+export function useDeleteArticle(
   articles: IArticles[] | null,
   setArticles: (articles: IArticles[]) => void,
   authData: any,
-) => {
+) {
   const [open, setOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
 
@@ -62,4 +62,4 @@ export const useDeleteArticle = (
   };
 
   return { open, handleOpen, handleDelete, requestDelete };
-};
+}

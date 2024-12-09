@@ -55,7 +55,7 @@ export function NavbarDefault() {
         <div className="flex gap-5">
           {isAuthenticated && (
             <>
-              <Link to={'/my'}>
+              <Link to={'/my-articles'}>
                 <Typography
                   className="mr-4 cursor-pointer py-2 font-medium"
                   placeholder="Material Tailwind"
@@ -63,7 +63,7 @@ export function NavbarDefault() {
                   My Articles
                 </Typography>
               </Link>
-              <Link to={'/new'}>
+              <Link to={'/create-article'}>
                 <Typography
                   className="mr-4 cursor-pointer py-2 font-medium text-blue-600"
                   placeholder="Material Tailwind"

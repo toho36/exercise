@@ -38,7 +38,7 @@ export function Article(article: IArticle) {
       <CardHeader shadow={false} floated={false} className="rounded-sm w-auto ">
         <img
           src={article.imgBlob}
-          alt="card-image"
+          alt="article image"
           className="max-h-[244px] max-w-[244px] min-w-[244px] "
         />
       </CardHeader>

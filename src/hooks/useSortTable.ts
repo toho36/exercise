@@ -1,4 +1,4 @@
-import { ITableRow } from '@/pages/MyArticlesPage';
+import { ITableRow } from '@/pages/my-articlesArticlesPage';
 import { IArticles } from '@/store/slices/articlesSlice';
 
 /**
@@ -17,12 +17,12 @@ import { IArticles } from '@/store/slices/articlesSlice';
  * const sortTable = useSortTable(articles, setArticles, sortConfig, setSortConfig);
  * sortTable('title'); // Sorts articles by 'title'
  */
-export const useSortTable = (
+export function useSortTable(
   articles: IArticles[] | null,
   setArticles: (articles: IArticles[]) => void,
   sortConfig: { key: string; direction: string } | null,
   setSortConfig: React.Dispatch<React.SetStateAction<{ key: string; direction: string } | null>>,
-) => {
+) {
   return (key: keyof ITableRow) => {
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -40,4 +40,4 @@ export const useSortTable = (
     setArticles(sortedRows);
     setSortConfig({ key, direction });
   };
-};
+}

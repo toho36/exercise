@@ -31,11 +31,11 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: '/my',
+        path: '/my-articles',
         element: <MyArticlesPage />,
       },
       {
-        path: '/new',
+        path: '/create-article',
         element: <CreateNewArticlePage />,
       },
       {

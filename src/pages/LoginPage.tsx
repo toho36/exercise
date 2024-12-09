@@ -83,7 +83,7 @@ export function LoginPage() {
         tenant, // Pass the tenant's name
       });
       // Handle successful login, e.g., store token, redirect, etc.
-      navigate('/my'); // Redirect to /my on successful login
+      navigate('/my-articles'); // Redirect to /my-articles on successful login
     } catch (error: any) {
       console.error('Login error:', error.response?.data || error.message);
       // Handle login error, e.g., show error message

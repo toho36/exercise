@@ -63,7 +63,7 @@ export function CreateNewArticlePage() {
           'Content-Type': 'application/json',
         },
       });
-      navigate('/my');
+      navigate('/my-articles');
     } catch (error: any) {
       console.error('Error publishing article:', error.response?.data || error.message);
       alert('Failed to publish article. Please try again.');

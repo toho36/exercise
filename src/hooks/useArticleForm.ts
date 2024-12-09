@@ -60,7 +60,7 @@ export function useArticleForm(articleId: string, initialTitle: string, initialP
           },
         },
       );
-      navigate('/my');
+      navigate('/my-articles');
     } catch (error: any) {
       console.error('Error updating article:', error.response?.data || error.message);
       alert('Failed to update article. Please try again.');

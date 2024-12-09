@@ -6,10 +6,10 @@ interface TableCardProps {
   children: React.ReactNode;
 }
 
-const TableCard: React.FC<TableCardProps> = ({ children }) => (
-  <Card>
-    <div>{children}</div>
-  </Card>
-);
-
-export default TableCard;
+export default function TableCard({ children }: TableCardProps) {
+  return (
+    <Card>
+      <div>{children}</div>
+    </Card>
+  );
+}

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/store';
+import { API_BASE_URL } from '@/config';
 
 export const createTenant = async (
   name: string,
@@ -22,7 +23,6 @@ export const createTenant = async (
   }
 };
 
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 /**
  * LoginPage Component
  * This component represents the login page where users can input their email and password to log in.

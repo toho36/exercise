@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { API_BASE_URL } from '@/config';
 
 /**
  * Fetches an image from the API based on the provided image ID.

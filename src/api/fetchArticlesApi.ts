@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { fetchImageApi } from '@/api/fetchImageApi';
 import { IArticles } from '@/store/slices/articlesSlice';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { API_BASE_URL } from '@/config';
 
 /**
  * Fetches articles from the API and their corresponding images.

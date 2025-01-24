@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { fetchImageApi } from '@/api/fetchImageApi';
+import { API_BASE_URL } from '@/config';
 
 export interface IArticle {
   articleId: string;
@@ -13,8 +14,6 @@ export interface IArticle {
   comments: number;
   imgBlob?: string; // Add this optional property
 }
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
 
 /**
  * Fetches articles from the API and their corresponding images.

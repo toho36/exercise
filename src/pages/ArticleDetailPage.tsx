@@ -24,23 +24,23 @@ export function ArticleDetailPage() {
   return (
     <>
       <div>
-        <header className="w-full py-4xl px-8xl ">
-          <h1 className="text-[32px] font-semibold leading-[40px] py-8">{article?.title}</h1>
-          <p className="text-gray-500 pb-4">
+        <header className="py-4xl px-8xl w-full">
+          <h1 className="py-8 text-[32px] font-semibold leading-[40px]">{article?.title}</h1>
+          <p className="pb-4 text-gray-500">
             {article?.author || 'Unknown'} ·{' '}
             {article?.createdAt ? formatDate(article.createdAt) : 'Unknown'}
           </p>
         </header>
         <div className="flex">
-          <main className="flex flex-col w-4/6 gap-4xl">
-            <img src={article?.imgBlob} alt="Article Image" className="w-full h-auto mb-4" />
+          <main className="gap-4xl flex w-4/6 flex-col">
+            <img src={article?.imgBlob} alt="Article Image" className="mb-4 h-auto w-full" />
             <div data-color-mode="light">
               <MDEditor.Markdown source={article?.perex || ''} className="text-lg" />
             </div>
 
             <CommentSection />
           </main>
-          <div className="w-px bg-gray-300 mx-4"></div>
+          <div className="mx-4 w-px bg-gray-300"></div>
           <Sidebar />
         </div>
       </div>

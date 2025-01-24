@@ -9,14 +9,14 @@ interface ITableRowProps {
 export default function TableRow({ article, requestDelete }: ITableRowProps) {
   return (
     <tr key={article.articleId} className="border-b-2">
-      <td className="p-4 flex items-center gap-1">
+      <td className="flex items-center gap-1 p-4">
         <Checkbox />
         <Typography variant="small" color="blue-gray" className="font-bold">
           {article.title}
         </Typography>
       </td>
-      <td className="p-4 max-w-[420px]">
-        <Typography variant="small" className="font-normal line-clamp-1  text-gray-600">
+      <td className="max-w-[420px] p-4">
+        <Typography variant="small" className="line-clamp-1 font-normal text-gray-600">
           {article.perex}
         </Typography>
       </td>
@@ -32,7 +32,7 @@ export default function TableRow({ article, requestDelete }: ITableRowProps) {
       </td>
       <td className="p-4">
         <Link to={`/edit/${article.articleId}`}>
-          <span className="cursor-pointer mr-4">
+          <span className="mr-4 cursor-pointer">
             <i className="fa-solid fa-pen"></i>
           </span>
         </Link>

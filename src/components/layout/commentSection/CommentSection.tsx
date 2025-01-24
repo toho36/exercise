@@ -50,30 +50,30 @@ export function CommentSection() {
       <div className="py-3">
         <h1>Comments ({comments.length})</h1>
       </div>
-      <div className="flex items-center mb-2.5 gap-4">
+      <div className="mb-2.5 flex items-center gap-4">
         <AvatarDefault />
 
         <InputDefault placeholder="join the discussion" type="text" />
       </div>
       {comments.map(comment => (
-        <div key={comment.id} className="flex items-start mt-2.5">
+        <div key={comment.id} className="mt-2.5 flex items-start">
           <AvatarDefault /> {/* Added margin-right for padding */}
           <div className="ml-4">
             <strong>{comment.author}</strong> <span>{comment.timestamp}</span>
             <p>{comment.text}</p>
             <div className="flex items-center">
               <span> {comment.score}</span>
-              <div className="w-px h-5 bg-gray-300 ml-3" />
+              <div className="ml-3 h-5 w-px bg-gray-300" />
               <CustomIconButton
                 iconClass="fa-solid fa-chevron-up"
                 onClick={() => handleVote(comment.id, 1)}
               />
-              <div className="w-px h-5 bg-gray-300" />
+              <div className="h-5 w-px bg-gray-300" />
               <CustomIconButton
                 iconClass="fa-solid fa-chevron-down"
                 onClick={() => handleVote(comment.id, -1)}
               />
-              <div className="w-px h-5 bg-gray-300" />
+              <div className="h-5 w-px bg-gray-300" />
             </div>
           </div>
         </div>

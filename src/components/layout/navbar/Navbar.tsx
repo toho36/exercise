@@ -27,8 +27,8 @@ export function NavbarDefault() {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
   return (
-    <div className="w-full mx-auto py-2 border-b-2 bg-blue-gray-50">
-      <div className="w-3/4 mx-auto flex items-center justify-between  text-blue-gray-900">
+    <div className="mx-auto w-full border-b-2 bg-blue-gray-50 py-2">
+      <div className="mx-auto flex w-3/4 items-center justify-between text-blue-gray-900">
         <div className="flex gap-4">
           <Link to={'/'} className="flex gap-4">
             <img src={Logo} />

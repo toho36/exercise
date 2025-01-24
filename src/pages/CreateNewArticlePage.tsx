@@ -108,7 +108,7 @@ export function CreateNewArticlePage() {
         />
         {imagePreview && (
           <div className="mt-3">
-            <img src={imagePreview} alt="Image Preview" className="w-32 h-32 object-cover" />
+            <img src={imagePreview} alt="Image Preview" className="h-32 w-32 object-cover" />
           </div>
         )}
       </div>

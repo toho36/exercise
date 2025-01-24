@@ -31,7 +31,7 @@ export function InputDefault({ placeholder, type, value, onChange }: IInputDefau
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="!border !border-gray-300 bg-white text-gray-900  ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
+        className="!border !border-gray-300 bg-white text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
         labelProps={{
           className: 'hidden',
         }}

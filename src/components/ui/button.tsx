@@ -47,7 +47,7 @@ export function ButtonDefault({
       disabled={disabled}
       className="flex items-center gap-2"
     >
-      {image && <img src={image} alt="icon" className="w-5 h-5" />}
+      {image && <img src={image} alt="icon" className="h-5 w-5" />}
       {text}
     </Button>
   );

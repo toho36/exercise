@@ -23,7 +23,7 @@ export function Sidebar() {
             <Typography variant="h6" color="blue-gray" children={article.title}></Typography>
             <Typography
               color="blue-gray"
-              className=" line-clamp-3"
+              className="line-clamp-3"
               children={article.perex}
             ></Typography>
           </div>

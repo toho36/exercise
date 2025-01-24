@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useStore } from '@/store/store';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { API_BASE_URL } from '@/config';
 
 /**
  * A custom hook that handles image upload, preview, and deletion for an article.

@@ -2,8 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/store';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { API_BASE_URL } from '@/config';
 
 /**
  * A custom hook that manages the state and submission logic for updating an article.

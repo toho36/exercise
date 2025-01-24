@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
+import { API_BASE_URL } from '@/config';
 
 export async function publishArticle(
   title: string,

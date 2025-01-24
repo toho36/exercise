@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@/config'; // Adjust the path based on file structure
+import { API_BASE_URL } from '@/config';
 
 /**
  * Deletes an article from the API.

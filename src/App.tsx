@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <NavbarDefault />
-      <div className="flex flex-col w-3/4 mx-auto gap-y-8">
+      <div className="mx-auto flex w-3/4 flex-col gap-y-8">
         <Outlet />
       </div>
     </div>

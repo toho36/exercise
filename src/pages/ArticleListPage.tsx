@@ -25,7 +25,7 @@ export function ArticleListPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold my-8">Recent Articles</h1>
+      <h1 className="my-8 text-2xl font-bold">Recent Articles</h1>
       <div className="flex flex-wrap gap-8">
         {articles && articles.map(article => <Article key={article.articleId} {...article} />)}
       </div>

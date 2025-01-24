@@ -72,10 +72,10 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-start h-screen pt-10">
-      <div className="w-96 h-83 p-6 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex h-screen items-start justify-center pt-10">
+      <div className="h-83 w-96 rounded-lg bg-gray-100 p-6 shadow-md">
         <form className="space-y-4" onSubmit={handleLogin}>
-          <h2 className="text-xl font-bold ">Log In</h2>
+          <h2 className="text-xl font-bold">Log In</h2>
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1">
               Username:

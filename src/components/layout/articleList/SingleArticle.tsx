@@ -21,25 +21,25 @@ import { IArticle } from '@/api/fetchArticleApi';
  */
 export function Article(article: IArticle) {
   return (
-    <Card key={article.articleId} className="w-[48rem]  flex-row">
-      <CardHeader shadow={false} floated={false} className="rounded-sm w-auto ">
+    <Card key={article.articleId} className="w-[48rem] flex-row">
+      <CardHeader shadow={false} floated={false} className="w-auto rounded-sm">
         <img
           src={article.imgBlob}
           alt="article image"
-          className="max-h-[244px] max-w-[244px] min-w-[244px] "
+          className="max-h-[244px] min-w-[244px] max-w-[244px]"
         />
       </CardHeader>
-      <CardBody className="p-0 w-2/3">
-        <Typography variant="h4" color="blue-gray" className="ml-5 my-2">
+      <CardBody className="w-2/3 p-0">
+        <Typography variant="h4" color="blue-gray" className="my-2 ml-5">
           {article.title}
         </Typography>
-        <Typography color="gray" className="ml-5 mb-2 font-normal">
+        <Typography color="gray" className="mb-2 ml-5 font-normal">
           {article.author} • {formatDate(article.createdAt)}
         </Typography>
-        <Typography color="gray" className=" mx-5 mb-8 font-normal line-clamp-4">
+        <Typography color="gray" className="mx-5 mb-8 line-clamp-4 font-normal">
           {article.perex}
         </Typography>
-        <div className="mb-5 mr-5 flex  items-center">
+        <div className="mb-5 mr-5 flex items-center">
           <Link to={`/article/${article.articleId}`}>
             <Button variant="text" className="flex items-center gap-2" color="blue">
               Learn More

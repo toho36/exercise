@@ -1,13 +1,6 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
-
-export async function publishArticle(
-  title: string,
-  value: string,
-  imageId: string | null,
-  authData: any,
-) {
+export async function publishArticleApi(title: string, value: string, imageId: string | null) {
   const payload: any = {
     title,
     perex: value,
@@ -17,11 +10,5 @@ export async function publishArticle(
     payload.imageId = imageId;
   }
 
-  return await axios.post(`${API_BASE_URL}/articles`, payload, {
-    headers: {
-      'Authorization': `Bearer ${authData?.token || ''}`,
-      'X-API-KEY': authData?.xApiKey || '',
-      'Content-Type': 'application/json',
-    },
-  });
+  return await apiClient.post('/articles', payload);
 }

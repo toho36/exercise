@@ -38,10 +38,7 @@ export function useArticles() {
       setIsLoading(true);
       setError(null);
       try {
-        const fetchedArticles = await fetchArticlesApi(
-          authData?.token || '',
-          authData?.xApiKey || '',
-        );
+        const fetchedArticles = await fetchArticlesApi();
         const articlesWithAuthor = fetchedArticles.map(article => ({
           ...article,
           author: authData?.tenant || article.author,

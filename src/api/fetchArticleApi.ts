@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 import { fetchImageApi } from '@/api/fetchImageApi';
 
 export interface IArticle {
@@ -11,47 +11,24 @@ export interface IArticle {
   createdAt: string;
   perex: string;
   comments: number;
-  imgBlob?: string; // Add this optional property
+  imgBlob?: string;
 }
 
-const API_BASE_URL = 'https://fullstack.exercise.applifting.cz';
-
 /**
- * Fetches articles from the API and their corresponding images.
- * @param {string} accessToken - The access token for authentication.
- * @param {string} apiKey - The API key for authentication.
- * @returns {Promise<Article[]>} A promise that resolves to an array of articles with images.
- * @throws {Error} If there is an error fetching the articles.
+ * Fetches an article from the API and its corresponding image.
+ * @param {string} articleId - The ID of the article to fetch.
+ * @returns {Promise<IArticle>} A promise that resolves to an article with an image.
  */
-export async function fetchArticleApi(
-  accessToken: string,
-  apiKey: string,
-  articleId: string,
-): Promise<IArticle> {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/articles/${articleId}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'x-api-key': apiKey,
-      },
-    });
+export async function fetchArticleApi(articleId: string): Promise<IArticle> {
+  const response = await apiClient.get(`/articles/${articleId}`);
+  const article: IArticle = response.data;
 
-    const article: IArticle = response.data;
-    if (article.imageId) {
-      const imageBlob = await fetchImageApi(article.imageId, accessToken, apiKey);
-      const fullArticle: IArticle = {
-        ...article,
-        imgBlob: imageBlob,
-      };
-      return fullArticle;
-    }
-    const fullArticle: IArticle = {
-      ...article,
-      imgBlob: '',
-    };
-    return fullArticle;
-  } catch (error) {
-    console.error('Error fetching the article or image:', error);
-    throw error;
+  if (article.imageId) {
+    const imageBlob = await fetchImageApi(article.imageId);
+    article.imgBlob = imageBlob;
+  } else {
+    article.imgBlob = '';
   }
+
+  return article;
 }

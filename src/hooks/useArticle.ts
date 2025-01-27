@@ -37,11 +37,7 @@ export function useArticle(articleId?: string) {
       setIsLoading(true);
       setError(null);
       try {
-        const fetchedArticle = await fetchArticleApi(
-          authData?.token || '',
-          authData?.xApiKey || '',
-          articleId || '',
-        );
+        const fetchedArticle = await fetchArticleApi(articleId || '');
         const articleWithAuthor = {
           ...fetchedArticle,
           author: authData?.tenant || fetchedArticle.author,

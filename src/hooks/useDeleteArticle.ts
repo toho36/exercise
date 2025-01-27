@@ -41,7 +41,7 @@ export function useDeleteArticle(
     if (!articleToDelete) return;
 
     try {
-      await deleteArticleApi(articleToDelete, authData);
+      await deleteArticleApi(articleToDelete);
 
       if (articles) {
         const updatedArticles = articles.filter(article => article.articleId !== articleToDelete);

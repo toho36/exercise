@@ -5,7 +5,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { useStore } from '@/store/store';
 import { useNavigate } from 'react-router-dom';
 import { useImageHandler } from '@/hooks/useImageHandler';
-import { publishArticle } from '@/api/publishArticleApi';
+import { publishArticleApi } from '@/api/publishArticleApi';
 
 /**
  * CreateNewArticlePage Component
@@ -54,7 +54,7 @@ export function CreateNewArticlePage() {
         payload.imageId = imageId;
       }
 
-      await publishArticle(title, value, imageId, authData);
+      await publishArticleApi(title, value, imageId);
       navigate('/my-articles');
     } catch (error: any) {
       console.error('Error publishing article:', error.response?.data || error.message);

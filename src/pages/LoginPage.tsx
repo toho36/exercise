@@ -1,37 +1,11 @@
 import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/store';
-import { API_BASE_URL } from '@/config';
+import { createTenantApi } from '@/api/createTenantApi';
+import apiClient, { setAuthHeaders } from '@/api/apiClient';
 
-export const createTenant = async (
-  name: string,
-  password: string,
-): Promise<{ apiKey: string; tenant: string }> => {
-  try {
-    const response = await axios.post<{ apiKey: string; name: string }>(`${API_BASE_URL}/tenants`, {
-      name,
-      password,
-    });
-    console.log('Tenant created. API Key:', response.data.apiKey);
-    return { apiKey: response.data.apiKey, tenant: response.data.name };
-  } catch (error: any) {
-    console.error('Error creating tenant:', error.response?.data || error.message);
-    throw error;
-  }
-};
-
-/**
- * LoginPage Component
- * This component represents the login page where users can input their email and password to log in.
- * The process first creates a tenant using the email and password, then uses the received API key to log in
- * and retrieve an access token. Upon successful login, the authentication data is stored in the application's state
- * and the user is redirected to a different page.
- *
- * @returns {JSX.Element} The LoginPage component.
- */
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,11 +16,11 @@ export function LoginPage() {
     event.preventDefault();
     try {
       // First, create a tenant to get the API key and name
-      const { apiKey, tenant } = await createTenant(email, password);
+      const { apiKey, tenant } = await createTenantApi(email, password);
 
       // Then, log in using the API key to get the access token
-      const response = await axios.post<{ access_token: string }>(
-        `${API_BASE_URL}/login`,
+      const response = await apiClient.post<{ access_token: string }>(
+        '/login',
         {
           username: email,
           password,
@@ -58,6 +32,10 @@ export function LoginPage() {
         },
       );
 
+      // Set authentication headers globally
+      setAuthHeaders(response.data.access_token, apiKey);
+
+      // Store auth data in the global state
       setAuthData({
         xApiKey: apiKey,
         token: response.data.access_token,

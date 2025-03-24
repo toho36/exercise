@@ -3,7 +3,7 @@ import { Avatar, Typography } from '@material-tailwind/react';
 import type { NavbarProps } from '@material-tailwind/react';
 import Logo from '@/assets/images/logo.svg';
 import { ButtonDefault } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AvatarDefault } from '../avatar/Avatar';
 import { useStore } from '@/store/store';
 
@@ -23,9 +23,16 @@ export function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
   const isAuthenticated = useStore(state => !!state.authData);
   const setAuthData = useStore(state => state.setAuthData);
+  const navigate = useNavigate();
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
+
+  const handleLogout = () => {
+    setAuthData(null);
+    navigate('/login');
+  };
+
   return (
     <div className="mx-auto w-full border-b-2 bg-blue-gray-50 py-2">
       <div className="mx-auto flex w-3/4 items-center justify-between text-blue-gray-900">
@@ -72,7 +79,7 @@ export function NavbarDefault() {
                 variant="text"
                 text="log out"
                 color="red"
-                onClick={() => setAuthData(null)}
+                onClick={handleLogout}
               ></ButtonDefault>
             </>
           )}

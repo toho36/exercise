@@ -1,7 +1,7 @@
 // components/ui/TableHeader.tsx
 import React from 'react';
 import { Checkbox, Typography } from '@material-tailwind/react';
-import { ITableRow } from '@/pages/MyArticlesPage';
+import { ITableRow } from '@/pages/articles/MyArticlesPage';
 
 interface TableHeaderProps {
   sortTable: (key: string) => void;

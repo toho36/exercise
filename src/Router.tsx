@@ -1,12 +1,13 @@
 import App from '@/App';
-import { ArticleListPage } from '@/pages/ArticleListPage';
-import { NotFoundPage } from '@/pages/NotFoundPage';
+import { ArticleListPage } from '@/pages/articles/ArticleListPage';
+import { NotFoundPage } from '@/pages/articles/NotFoundPage';
 import { createBrowserRouter } from 'react-router-dom';
-import { ArticleDetailPage } from '@/pages/ArticleDetailPage';
-import { LoginPage } from '@/pages/LoginPage';
-import { MyArticlesPage } from '@/pages/MyArticlesPage';
-import { CreateNewArticlePage } from './pages/CreateNewArticlePage';
-import { EditArticlePage } from './pages/EditArticlePage';
+import { ArticleDetailPage } from '@/pages/articles/ArticleDetailPage';
+import LoginPage from '@/pages/auth/LoginPage';
+import { MyArticlesPage } from '@/pages/articles/MyArticlesPage';
+import { CreateNewArticlePage } from './pages/articles/CreateNewArticlePage';
+import { EditArticlePage } from './pages/articles/EditArticlePage';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -32,15 +33,27 @@ export const router = createBrowserRouter([
       },
       {
         path: '/my-articles',
-        element: <MyArticlesPage />,
+        element: (
+          <ProtectedRoute>
+            <MyArticlesPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/create-article',
-        element: <CreateNewArticlePage />,
+        element: (
+          <ProtectedRoute>
+            <CreateNewArticlePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/edit/:articleId',
-        element: <EditArticlePage />,
+        element: (
+          <ProtectedRoute>
+            <EditArticlePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

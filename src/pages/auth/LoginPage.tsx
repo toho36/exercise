@@ -1,16 +1,28 @@
 import { ButtonDefault } from '@/components/ui/button';
 import { InputDefault } from '@/components/ui/input';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from '@/store/store';
 import { createTenantApi } from '@/api/createTenantApi';
 import apiClient, { setAuthHeaders } from '@/api/apiClient';
 
-export function LoginPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const setAuthData = useStore(state => state.setAuthData);
+  const isAuthenticated = useStore(state => !!state.authData);
+
+  // Get the page they were trying to visit, or default to home
+  const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    // If they're already logged in, redirect them
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
